@@ -6,16 +6,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.foxminded_newsfeed.model.Item
+import com.example.foxminded_newsfeed.domain.model.NewsItem
 
 @Composable
 fun LazyItemsColumn(
-    listItems: List<Item>,
+    listNewsItems: List<NewsItem>,
     modifier: Modifier = Modifier
 ) {
 
     LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        items(items = listItems) { news ->
+        items(items = listNewsItems) { news ->
             ItemNews(
                 imgUrl = news.imgUrl,
                 title = news.title,

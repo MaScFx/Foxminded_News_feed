@@ -15,3 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Foxminded_News feed"
 include(":app")
+include(":data")
+include(":domain")

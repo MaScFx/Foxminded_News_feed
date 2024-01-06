@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.foxminded_newsfeed.R
-import com.example.foxminded_newsfeed.model.NewsSource
+import com.example.foxminded_newsfeed.domain.model.NewsSource
 import com.example.foxminded_newsfeed.ui.theme.ItemsBackground
 import com.example.foxminded_newsfeed.ui.theme.PrimaryOrange
 
