@@ -31,6 +31,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.foxminded_newsfeed.model.NewsSource
+import com.example.foxminded_newsfeed.model.Item
+import com.example.foxminded_newsfeed.ui.compose.LazyItemsColumn
 import com.example.foxminded_newsfeed.ui.theme.DarkGrey
 import com.example.foxminded_newsfeed.ui.theme.LightGrey
 import com.example.foxminded_newsfeed.ui.theme.PrimaryOrange
@@ -122,11 +125,16 @@ fun Greeting(modifier: Modifier = Modifier) {
                 .fillMaxSize()
                 .padding(it)
         ) {
-            Text(
-                text = items[bottomNavState].contentDescription, modifier = Modifier.align(
-                    Alignment.Center
-                ), fontSize = 45.sp
-            )
+            when (bottomNavState) {
+                0 -> LazyItemsColumn(listItems = getTestItemsNewsData())
+                2 -> LazyItemsColumn(listItems = getTestItemsNewsData())
+                1 -> Text(
+                    text = items[bottomNavState].contentDescription, modifier = Modifier.align(
+                        Alignment.Center
+                    ), fontSize = 45.sp
+                )
+            }
+
         }
 
     }
@@ -137,3 +145,19 @@ fun Greeting(modifier: Modifier = Modifier) {
 data class NavItemState(
     val selectedIcon: ImageVector, val unselectedIcon: ImageVector, val contentDescription: String
 )
+
+fun getTestItemsNewsData(): List<Item> {
+    val list = ArrayList<Item>()
+    for (i in 0 until 30) {
+        list.add(
+            Item(
+                isFavorites = false,
+                time = "$i minutes ago",
+                newsSource = NewsSource.BBC,
+                title = "$i Good news!! Your DOG Win five million dollars! Graz!",
+                imgUrl = "https://cpad.ask.fm/865/242/195/-9996995-2020i7r-er5rgsls2hkd5p0/large/_pcfqBsO9Ck.jpg",
+            )
+        )
+    }
+    return list
+}
