@@ -89,6 +89,8 @@ dependencies {
     annotationProcessor ("com.google.dagger:hilt-compiler:2.50")
     implementation("androidx.fragment:fragment-ktx:1.7.0-alpha07")
 
+
+
 }
 
 kapt {

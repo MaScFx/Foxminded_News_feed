@@ -6,7 +6,7 @@ import com.example.foxminded_newsfeed.domain.repository.NewsRepository
 
 class GetNewsFromSelectedProvider(private val newsRepository: NewsRepository) {
     //private val newsSource: NewsSource
-    fun get(newsSource: NewsSource): List<NewsItem> {
+    suspend fun get(newsSource: NewsSource): List<NewsItem> {
         return newsRepository.getNewsFromSelectedProvider(newsSource)
     }
 }

@@ -4,7 +4,7 @@ import com.example.foxminded_newsfeed.domain.model.NewsItem
 import com.example.foxminded_newsfeed.domain.repository.NewsRepository
 
 class GetFavoriteNews(private val newsRepository : NewsRepository) {
-    fun get(): List<NewsItem>{
+    suspend fun get(): List<NewsItem>{
         return newsRepository.getFavoriteNews()
     }
 

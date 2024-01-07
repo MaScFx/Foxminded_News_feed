@@ -4,8 +4,8 @@ import com.example.foxminded_newsfeed.domain.model.NewsItem
 import com.example.foxminded_newsfeed.domain.model.NewsSource
 
 interface NewsRepository {
-    fun checkNewNews(): List<NewsItem>
-    fun getNewsFromBD(): List<NewsItem>
-    fun getFavoriteNews(): List<NewsItem>
-    fun getNewsFromSelectedProvider(newsSource: NewsSource): List<NewsItem>
+    suspend fun checkNewNews(): List<NewsItem>
+    suspend fun getNewsFromBD(): List<NewsItem>
+    suspend fun getFavoriteNews(): List<NewsItem>
+    suspend fun getNewsFromSelectedProvider(newsSource: NewsSource): List<NewsItem>
 }
