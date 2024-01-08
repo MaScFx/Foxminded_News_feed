@@ -1,7 +1,8 @@
 package com.example.foxminded_newsfeed.data
 
 import com.example.foxminded_newsfeed.data.model.NewsModel
-import com.example.foxminded_newsfeed.data.network.RetrofitClient
+import com.example.foxminded_newsfeed.data.network.reddit.RedditRetrofitClient
+import com.example.foxminded_newsfeed.data.network.welt.WeltRetrofitClient
 import com.example.foxminded_newsfeed.domain.model.NewsItem
 import com.example.foxminded_newsfeed.domain.model.NewsSource
 import com.example.foxminded_newsfeed.domain.repository.NewsRepository
@@ -9,19 +10,40 @@ import com.example.foxminded_newsfeed.domain.repository.NewsRepository
 class NewsRepositoryImpl : NewsRepository {
     override suspend fun checkNewNews(): List<NewsItem> {
 
-        val response =RetrofitClient.redditApi.getRedditNews()
+//        val response = RedditRetrofitClient.redditApi.getRedditNews()
+//
+//        val RedditResponse = response.items?.map { newsModel ->
+//            NewsItem(
+//                imgUrl = newsModel.imgUrl?.url
+//                    ?: "https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_reddit-512.png",
+//                title = newsModel.title ?: "",
+//                newsSource = NewsSource.Reddit,
+//                time = newsModel.published ?: "3 min ago",
+//                isFavorites = false,
+//                link = newsModel.link?.href ?: "no link",
+//                id = newsModel.id ?: "no id"
+//            )
+//        } ?: listOf<NewsItem>()
 
-        return response.items?.map { newsModel ->
+        val weltResponse = WeltRetrofitClient.weltApi.getWeltNews()
+
+        return weltResponse.channel?.item?.map { newsModel ->
             NewsItem(
-                imgUrl = newsModel.imgUrl?.url ?:"https://cpad.ask.fm/865/242/195/-9996995-2020i7r-er5rgsls2hkd5p0/large/_pcfqBsO9Ck.jpg",
-                title = newsModel.title ?:"",
-                newsSource = NewsSource.Reddit,
-                time = newsModel.published ?:"3 min ago",
+                imgUrl = newsModel.content[0]?.url ?: "https://edition.welt.de/assets/app_download.png",
+//                imgUrl = "https://edition.welt.de/assets/app_download.png",
+                title = newsModel.title,
+                newsSource = NewsSource.WELT,
+//                time = "3 min ago",
+                time = newsModel.published ?: "3 min ago",
                 isFavorites = false,
-                link = newsModel.link?.href ?:"no link",
-                id = newsModel.id ?:"no id"
+//                link = "no link",
+                link = newsModel.link ?: "no link",
+//                id = "no id"
+                id = newsModel.id ?: "no id"
             )
         } ?: listOf<NewsItem>()
+
+
     }
 
     override suspend fun getNewsFromBD(): List<NewsItem> {

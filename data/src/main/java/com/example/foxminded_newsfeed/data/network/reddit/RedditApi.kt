@@ -1,4 +1,4 @@
-package com.example.foxminded_newsfeed.data.network
+package com.example.foxminded_newsfeed.data.network.reddit
 
 import retrofit2.http.GET
 

@@ -47,5 +47,10 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
+//    //xml Converter
+//    implementation("com.tickaroo.tikxml:annotation:0.8.15")
+//    implementation("com.tickaroo.tikxml:core:0.8.15")
+//    annotationProcessor ("com.tickaroo.tikxml:processor:0.8.15")
+
 
 }

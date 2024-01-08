@@ -1,14 +1,15 @@
-package com.example.foxminded_newsfeed.data.network
+package com.example.foxminded_newsfeed.data.network.welt
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 
-object RetrofitClient {
-    private const val BASE_URL = "https://www.reddit.com/"
+object WeltRetrofitClient {
 
-    val redditApi: RedditApi by lazy {
+    private const val BASE_URL = "https://www.welt.de/"
+
+    val weltApi: WeltApi by lazy {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
 
@@ -19,6 +20,6 @@ object RetrofitClient {
             .client(okHttpClient)
             .addConverterFactory(SimpleXmlConverterFactory.create())
             .build()
-            .create(RedditApi::class.java)
+            .create(WeltApi::class.java)
     }
 }

@@ -1,11 +1,11 @@
-package com.example.foxminded_newsfeed.data.network
+package com.example.foxminded_newsfeed.data.network.reddit
 
 import org.simpleframework.xml.Attribute
 import org.simpleframework.xml.Element
 import org.simpleframework.xml.Root
 
 @Root(name = "entry", strict = false)
-data class RssItem(
+data class RssRedditItem(
     @field:Element(name = "title", required = false) var title: String? = null,
 
     @field:Element(name = "id", required = false) var id: String? = null,
