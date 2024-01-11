@@ -1,5 +1,7 @@
 package com.example.foxminded_newsfeed.ui.compose
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -30,11 +32,13 @@ import com.example.foxminded_newsfeed.R
 import com.example.foxminded_newsfeed.domain.model.NewsSource
 import com.example.foxminded_newsfeed.ui.theme.ItemsBackground
 import com.example.foxminded_newsfeed.ui.theme.PrimaryOrange
+import java.time.ZonedDateTime
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ItemNews(
-    imgUrl: String, title: String, newsSource: NewsSource, time: String, isFavorites: Boolean
+    imgUrl: String, title: String, newsSource: NewsSource, publishedTime: ZonedDateTime, isFavorites: Boolean
 ) {
     Box(
         modifier = Modifier
@@ -85,7 +89,7 @@ fun ItemNews(
 
                     }
                     Text(
-                        text = time,
+                        text = publishedTime.toLocalTime().toString(),
                         fontSize = 11.sp,
                         fontFamily = FontFamily(Font(R.font.poppins)),
                         modifier = Modifier.align(Alignment.BottomStart)
@@ -121,14 +125,15 @@ fun ItemNews(
 
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun ItemNewsPreview() {
     ItemNews(
         imgUrl = "https://cpad.ask.fm/865/242/195/-9996995-2020i7r-er5rgsls2hkd5p0/large/_pcfqBsO9Ck.jpg",
         title = "Good news!! Your DOG Win five million dollars! Graz!",
-        time = "3 minutes ago",
-        newsSource = NewsSource.BBC,
+        publishedTime = ZonedDateTime.now(),
+        newsSource = NewsSource.Reddit,
         isFavorites = true
     )
 }

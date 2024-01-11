@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,18 +17,20 @@ import javax.inject.Inject
 class FavoriteNewsVM @Inject constructor(private val getFavoriteNews: GetFavoriteNews) :
     ViewModel() {
 
-    private val _uiState = MutableStateFlow(UIState())
-    val uiState: StateFlow<UIState> = _uiState.asStateFlow()
+    //    private val _uiState = MutableStateFlow(UIState())
+//    val uiState: StateFlow<UIState> = _uiState.asStateFlow()
+    val favoriteNewsFlow = getFavoriteNews.get()
 
-    init {
-        viewModelScope.launch {
-            val a: List<NewsItem> = getFavoriteNews.get()
-            a[0].title = "azazaz-getFavoriteNews"
+//    init {
+//        viewModelScope.launch {
+//            newsFlow = getFavoriteNews.get().stateIn(viewModelScope)
 
-            _uiState.update { c ->
-                c.copy(newsList = a)
-            }
-        }
-
-    }
+//            val itemList: List<NewsItem> = getFavoriteNews.get().coll
+//
+//            _uiState.update { c ->
+//                c.copy(newsList = itemList)
+//            }
+//        }
+//
+//    }
 }

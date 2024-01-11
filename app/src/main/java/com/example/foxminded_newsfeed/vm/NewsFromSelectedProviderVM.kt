@@ -20,12 +20,20 @@ class NewsFromSelectedProviderVM @Inject constructor(
     private val _uiState = MutableStateFlow(UIState())
     val uiState: StateFlow<UIState> = _uiState.asStateFlow()
 
-    init {
+    fun newsFromSelectedSource(newsSource: NewsSource) {
         viewModelScope.launch {
-            _uiState.update { c ->
-                c.copy(newsList = getNewsFromSelectedProvider.get(NewsSource.BBC))
+            _uiState.update {
+                it.copy(newsList = getNewsFromSelectedProvider.get(newsSource))
             }
         }
-
     }
+
+//    init {
+//        viewModelScope.launch {
+//            _uiState.update { c ->
+//                c.copy(newsList = getNewsFromSelectedProvider.get(NewsSource.WELT))
+//            }
+//        }
+//
+//    }
 }

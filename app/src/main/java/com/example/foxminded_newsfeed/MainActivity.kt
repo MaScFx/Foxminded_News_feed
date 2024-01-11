@@ -23,16 +23,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.example.foxminded_newsfeed.ui.compose.LazyItemsColumn
 import com.example.foxminded_newsfeed.ui.screen.AllNews
 import com.example.foxminded_newsfeed.ui.screen.FavoriteNews
 import com.example.foxminded_newsfeed.ui.screen.NewsFromSelectedProvider
@@ -44,22 +41,14 @@ import com.example.foxminded_newsfeed.vm.AllNewsVM
 import com.example.foxminded_newsfeed.vm.FavoriteNewsVM
 import com.example.foxminded_newsfeed.vm.NewsFromSelectedProviderVM
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-//    @Inject lateinit var allNewsVM: AllNewsVM
-//    @Inject lateinit var favoriteNewsVM: FavoriteNewsVM
-//    @Inject lateinit var newsFromSelectedProviderVM: NewsFromSelectedProviderVM
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val allNewsVM: AllNewsVM by viewModels()
         val favoriteNewsVM: FavoriteNewsVM by viewModels()
         val newsFromSelectedVM: NewsFromSelectedProviderVM by viewModels()
-
 
         setContent {
             Greeting(
@@ -67,9 +56,6 @@ class MainActivity : ComponentActivity() {
                 favoriteNewsVM = favoriteNewsVM,
                 newsFromSelectedProviderVM = newsFromSelectedVM
             )
-//            Foxminded_NewsFeedTheme {
-            // A surface container using the 'background' color from the theme
-
         }
     }
 }
@@ -125,7 +111,6 @@ fun Greeting(
     },
 
         bottomBar = {
-
             NavigationBar(containerColor = DarkGrey) {
                 items.forEachIndexed { index, navItemState ->
                     NavigationBarItem(selected = bottomNavState == index,
@@ -152,29 +137,12 @@ fun Greeting(
                 .padding(it)
         ) {
             when (bottomNavState) {
-
-
                 0 -> AllNews(allNewsVM = allNewsVM)
                 1 -> NewsFromSelectedProvider(newsFromSelectedProviderVM = newsFromSelectedProviderVM)
                 2 -> FavoriteNews(favoriteNewsVM = favoriteNewsVM)
-//
-//                0 -> LazyItemsColumn(listNewsItems = com.example.foxminded_newsfeed.data.getTestItemsNewsData())
-//                2 -> LazyItemsColumn(listNewsItems = com.example.foxminded_newsfeed.data.getTestItemsNewsData())
-//                1 -> Text(
-//                    text = items[bottomNavState].contentDescription, modifier = Modifier.align(
-//                        Alignment.Center
-//                    ), fontSize = 45.sp
-//                )
-//
-
-
             }
-
         }
-
     }
-
-
 }
 
 data class NavItemState(

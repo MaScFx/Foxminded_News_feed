@@ -17,32 +17,11 @@ data class RssWeltItem(
     var published: String? = null,
 
     @field:ElementList(name = "content",required = false, inline = true)
-//    @Path("content")
-//    @Text(required=false)
     var content: MutableList<Content?> = mutableListOf()
 )
 
-//@Root(name = "thumbnail", strict = false)
-//data class Image(
-//    @field:Attribute var url: String? = null
-//)
 @Root(name = "content", strict = false)
 data class Content(
     @field:Attribute(required = false)
-//    @Path("content")
-//    @Text(required = false)
     var url:String?=null
 )
-
-//@Root(name = "content", strict = false)
-////    @Path("content")
-////    @Text(required=false)
-//data class Content(
-//    @field:Attribute (name= "url", required = false)
-//    var url: String? = null
-//)
-
-//@Root(name = "content type", strict = false)
-//data class Image(
-//    @field:Attribute var url: String? = null
-//)

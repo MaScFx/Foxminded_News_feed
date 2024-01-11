@@ -20,11 +20,10 @@ class AllNewsVM @Inject constructor(private val getNews: GetNews) : ViewModel() 
 
     init {
         viewModelScope.launch{
-            val a:List<NewsItem> = getNews.get()
-            a[0].title = "azazaz-allNews"
+            val itemList:List<NewsItem> = getNews.get()
 
             _uiState.update { c ->
-                c.copy(newsList = a)
+                c.copy(newsList = itemList)
             }
         }
     }
