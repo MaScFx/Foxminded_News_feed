@@ -1,5 +1,7 @@
 package com.example.foxminded_newsfeed.ui.screen.allNews
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foxminded_newsfeed.domain.model.NewsItem
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class AllNewsVM @Inject constructor(private val getNews: GetNews) : ViewModel() {
 

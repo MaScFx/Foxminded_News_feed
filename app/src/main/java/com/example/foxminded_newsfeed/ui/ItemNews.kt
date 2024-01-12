@@ -38,8 +38,22 @@ import java.time.ZonedDateTime
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ItemNews(
-    imgUrl: String, title: String, newsSource: NewsSource, publishedTime: ZonedDateTime, isFavorites: Boolean
+    imgUrl: String,
+    title: String,
+    newsSource: NewsSource,
+    publishedTime: ZonedDateTime,
+    isFavorites: Boolean
 ) {
+    val secSincePubDate = (ZonedDateTime.now().toEpochSecond() - publishedTime.toEpochSecond())
+
+    val timeForItemPrint = when (secSincePubDate) {
+        in 0..59 -> "now"
+        in 60..3599 -> "${secSincePubDate / 60} minutes ago"
+        in 3600..7199 -> "one hour ago"
+        in 7200..86399 -> "${secSincePubDate / 60 / 60} hours ago"
+        in 86400..172800 -> "one day ago"
+        else -> "${secSincePubDate / 60 / 60 / 24} days ago"
+    }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -89,7 +103,7 @@ fun ItemNews(
 
                     }
                     Text(
-                        text = publishedTime.toLocalTime().toString(),
+                        text = timeForItemPrint,
                         fontSize = 11.sp,
                         fontFamily = FontFamily(Font(R.font.poppins)),
                         modifier = Modifier.align(Alignment.BottomStart)
@@ -113,7 +127,7 @@ fun ItemNews(
         else R.string.article_is_not_favorites
 
         Image(
-            painter = painterResource(id =favoriteIcon ) ,
+            painter = painterResource(id = favoriteIcon),
             contentDescription = stringResource(contentDescription),
             modifier = Modifier
                 .padding(bottom = 17.dp, end = 23.dp)
@@ -134,6 +148,7 @@ fun ItemNewsPreview() {
         title = "Good news!! Your DOG Win five million dollars! Graz!",
         publishedTime = ZonedDateTime.now(),
         newsSource = NewsSource.Reddit,
-        isFavorites = true
+        isFavorites = true,
+//        currentTime = ZonedDateTime.now()
     )
 }

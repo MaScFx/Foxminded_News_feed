@@ -84,6 +84,7 @@ class NewsRepositoryImpl @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getNewsFromBD(): Flow<List<NewsItem>> {
         return mainDB.dao.getAllFavoriteNewsEntity().map { item ->
+
                 convertFavoriteNewsEntityToNewsItem(item)
             }
     }
@@ -119,6 +120,6 @@ class NewsRepositoryImpl @Inject constructor(
                 link = favoriteNewsEntity.link,
                 id = favoriteNewsEntity.id
             )
-        }
+        }.reversed()
     }
 }
