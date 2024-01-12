@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".di.AppForDI"
+        android:name=".app.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -32,13 +32,6 @@
         <meta-data
             android:name="com.example.foxminded_newsfeed.data.room"
             android:value=".App"/>
-<!--        <meta-data-->
-<!--            android:name="com.example.foxminded_newsfeed.di"-->
-<!--            android:value=".AppForDI"/>-->
-        <meta-data
-            android:name="com.example.foxminded_newsfeed."
-            android:value=".NewsRepositoryImpl"/>
-
     </application>
 
 </manifest>

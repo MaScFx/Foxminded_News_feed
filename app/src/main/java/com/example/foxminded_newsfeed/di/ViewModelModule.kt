@@ -3,9 +3,9 @@ package com.example.foxminded_newsfeed.di
 import com.example.foxminded_newsfeed.domain.usecase.GetFavoriteNews
 import com.example.foxminded_newsfeed.domain.usecase.GetNews
 import com.example.foxminded_newsfeed.domain.usecase.GetNewsFromSelectedProvider
-import com.example.foxminded_newsfeed.vm.AllNewsVM
-import com.example.foxminded_newsfeed.vm.FavoriteNewsVM
-import com.example.foxminded_newsfeed.vm.NewsFromSelectedProviderVM
+import com.example.foxminded_newsfeed.ui.screen.allNews.AllNewsVM
+import com.example.foxminded_newsfeed.ui.screen.favoriteNews.FavoriteNewsVM
+import com.example.foxminded_newsfeed.ui.screen.newsFromSelectedProvider.NewsFromSelectedProviderVM
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,10 +1,12 @@
 package com.example.foxminded_newsfeed
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,20 +32,21 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import com.example.foxminded_newsfeed.ui.screen.AllNews
-import com.example.foxminded_newsfeed.ui.screen.FavoriteNews
-import com.example.foxminded_newsfeed.ui.screen.NewsFromSelectedProvider
+import com.example.foxminded_newsfeed.ui.screen.allNews.AllNews
+import com.example.foxminded_newsfeed.ui.screen.favoriteNews.FavoriteNews
+import com.example.foxminded_newsfeed.ui.screen.newsFromSelectedProvider.NewsFromSelectedProvider
 import com.example.foxminded_newsfeed.ui.theme.DarkGrey
 import com.example.foxminded_newsfeed.ui.theme.LightGrey
 import com.example.foxminded_newsfeed.ui.theme.PrimaryOrange
 import com.example.foxminded_newsfeed.ui.theme.White
-import com.example.foxminded_newsfeed.vm.AllNewsVM
-import com.example.foxminded_newsfeed.vm.FavoriteNewsVM
-import com.example.foxminded_newsfeed.vm.NewsFromSelectedProviderVM
+import com.example.foxminded_newsfeed.ui.screen.allNews.AllNewsVM
+import com.example.foxminded_newsfeed.ui.screen.favoriteNews.FavoriteNewsVM
+import com.example.foxminded_newsfeed.ui.screen.newsFromSelectedProvider.NewsFromSelectedProviderVM
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val allNewsVM: AllNewsVM by viewModels()
@@ -60,6 +63,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
