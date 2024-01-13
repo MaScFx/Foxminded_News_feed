@@ -22,13 +22,6 @@ class GetNews(private val newsRepository: NewsRepository) {
             allNewsList.add(it)
         }
 
-        allNewsList.sortWith { newsItem, newsItem2 ->
-            newsItem.publicationTime.compareTo(
-                newsItem2.publicationTime
-            )
-        }
-
-        allNewsList.reverse()
         return allNewsList
     }
 }

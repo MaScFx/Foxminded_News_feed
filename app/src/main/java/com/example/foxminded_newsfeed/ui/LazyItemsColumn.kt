@@ -17,9 +17,16 @@ fun LazyItemsColumn(
     onFavoriteButtonClick: (NewsItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val sortedList = listNewsItems.toMutableList()
+    sortedList.sortWith { newsItem, newsItem2 ->
+        newsItem.publicationTime.compareTo(
+            newsItem2.publicationTime
+        )
+    }
+    sortedList.reverse()
 
     LazyColumn(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        items(items = listNewsItems) { news ->
+        items(items = sortedList) { news ->
             ItemNews(
                 newsItem = news,
                 onFavoriteButtonClick = onFavoriteButtonClick
