@@ -8,6 +8,10 @@ val DarkGrey = Color(0xFF969696)
 val LightGrey = Color(0xFFF2F2F2)
 val ItemsBackground = Color(0xFFF3F3F3)
 
+val sourceColorWelt = Color(0xFF4A86A1)
+val sourceColorReddit = Color(0xFFFFAA00)
+
+
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)

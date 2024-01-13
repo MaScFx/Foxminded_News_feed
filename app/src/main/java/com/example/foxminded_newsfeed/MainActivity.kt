@@ -33,15 +33,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.example.foxminded_newsfeed.ui.screen.allNews.AllNews
+import com.example.foxminded_newsfeed.ui.screen.allNews.AllNewsVM
 import com.example.foxminded_newsfeed.ui.screen.favoriteNews.FavoriteNews
+import com.example.foxminded_newsfeed.ui.screen.favoriteNews.FavoriteNewsVM
 import com.example.foxminded_newsfeed.ui.screen.newsFromSelectedProvider.NewsFromSelectedProvider
+import com.example.foxminded_newsfeed.ui.screen.newsFromSelectedProvider.NewsFromSelectedProviderVM
 import com.example.foxminded_newsfeed.ui.theme.DarkGrey
 import com.example.foxminded_newsfeed.ui.theme.LightGrey
 import com.example.foxminded_newsfeed.ui.theme.PrimaryOrange
 import com.example.foxminded_newsfeed.ui.theme.White
-import com.example.foxminded_newsfeed.ui.screen.allNews.AllNewsVM
-import com.example.foxminded_newsfeed.ui.screen.favoriteNews.FavoriteNewsVM
-import com.example.foxminded_newsfeed.ui.screen.newsFromSelectedProvider.NewsFromSelectedProviderVM
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

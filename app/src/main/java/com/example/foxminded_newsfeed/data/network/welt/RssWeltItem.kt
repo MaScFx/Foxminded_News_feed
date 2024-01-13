@@ -11,7 +11,7 @@ data class RssWeltItem(
 
     @field:Element(name = "guid", required = false) var id: String ="",
 
-    @field:Element(name = "link", required = false) var link: String? = null,
+    @field:Element(name = "link", required = false) var link: String = "",
 
     @field:Element(name = "pubDate", required = false)
     var published: String? = null,

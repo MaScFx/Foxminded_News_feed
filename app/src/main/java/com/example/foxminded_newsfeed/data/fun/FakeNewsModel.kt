@@ -12,7 +12,7 @@ fun getFakeNewsModelList(): List<NewsItem> {
     for (i in 0 until 30) {
         list.add(
             NewsItem(
-                isFavorites = false,
+                isFavorites = 0,
                 publicationTime = ZonedDateTime.now(),
                 newsSource = NewsSource.Reddit,
                 title = "$i Good news!! Your DOG Win five million dollars! Graz!",

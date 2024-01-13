@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foxminded_newsfeed.domain.model.NewsItem
+import com.example.foxminded_newsfeed.domain.usecase.ClickFavoriteButtonOnItem
 import com.example.foxminded_newsfeed.domain.usecase.GetNews
 import com.example.foxminded_newsfeed.ui.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,20 +18,44 @@ import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class AllNewsVM @Inject constructor(private val getNews: GetNews) : ViewModel() {
+class AllNewsVM @Inject constructor(
+    private val getNews: GetNews,
+    private val clickFavoriteButtonOnItem: ClickFavoriteButtonOnItem,
+    private val generalUIState: MutableStateFlow<UIState>
+) : ViewModel() {
+    val uiState: StateFlow<UIState> = generalUIState.asStateFlow()
 
-    private val _uiState = MutableStateFlow(UIState())
-    val uiState: StateFlow<UIState> = _uiState.asStateFlow()
+    fun clickFavoriteButton(newsItem: NewsItem) {
+        generalUIState.update { state ->
+            val newState: MutableList<NewsItem> = ArrayList()
 
-    init {
-        viewModelScope.launch{
-            val itemList:List<NewsItem> = getNews.get()
-
-            _uiState.update { c ->
-                c.copy(newsList = itemList)
+            state.allNewsList.forEach { item ->
+                if (item.id == newsItem.id) {
+                    newState.add(item.copy(isFavorites = if (item.isFavorites == 1) 0 else 1))
+                } else {
+                    newState.add(item)
+                }
             }
+            state.copy(allNewsList = newState.toList())
+        }
+        if (generalUIState.value.selectedNewsList.isNotEmpty()) {
+            generalUIState.update { state ->
+                state.copy(selectedNewsList = state.allNewsList.filter { it.newsSource == state.selectedNewsList[0].newsSource })
+            }
+        }
+
+        viewModelScope.launch {
+            clickFavoriteButtonOnItem.cLick(newsItem)
         }
     }
 
+    init {
+        viewModelScope.launch {
+            val itemList: List<NewsItem> = getNews.get()
 
+            generalUIState.update { c ->
+                c.copy(allNewsList = itemList)
+            }
+        }
+    }
 }

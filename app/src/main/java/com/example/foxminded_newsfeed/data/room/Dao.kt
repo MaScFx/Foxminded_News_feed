@@ -1,7 +1,6 @@
 package com.example.foxminded_newsfeed.data.room
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -11,26 +10,21 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface Dao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLastNewsEntity(lastNewsEntity: LastNewsEntity)
+    suspend fun insert(lastNewsEntity: NewsEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFavoriteNewsEntity(favoriteNewsEntity: FavoriteNewsEntity)
-
-    @Delete
-    suspend fun deleteLastNewsEntity(lastNewsEntity: LastNewsEntity)
-
-    @Delete
-    suspend fun deleteFavoriteNewsEntity(lastNewsEntity: FavoriteNewsEntity)
+    @Query("DELETE FROM NewsEntity WHERE id = :newsId")
+    suspend fun delete(newsId: String)
 
     @Update
-    suspend fun updateLastNewsEntity(lastNewsEntity: LastNewsEntity)
+    suspend fun update(lastNewsEntity: NewsEntity)
 
-    @Update
-    suspend fun updateFavoriteNewsEntity(lastNewsEntity: FavoriteNewsEntity)
+    @Query("SELECT * FROM NewsEntity")
+    fun getAllNews(): Flow<List<NewsEntity>>
 
-    @Query("SELECT * FROM LastNewsEntity")
-    fun getAllLastNewsEntity(): Flow<List<LastNewsEntity>>
-    @Query("SELECT * FROM FavoriteNewsEntity")
-    fun getAllFavoriteNewsEntity(): Flow<List<FavoriteNewsEntity>>
+    @Query("SELECT * FROM NewsEntity WHERE isFavorite = 1")
+
+    fun getFavoriteNews(): Flow<List<NewsEntity>>
+    @Query("SELECT * FROM NewsEntity WHERE id = :newsId")
+    fun getByID(newsId: String): NewsEntity?
 
 }

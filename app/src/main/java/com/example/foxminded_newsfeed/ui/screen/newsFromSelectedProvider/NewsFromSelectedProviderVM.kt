@@ -2,8 +2,9 @@ package com.example.foxminded_newsfeed.ui.screen.newsFromSelectedProvider
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.foxminded_newsfeed.domain.model.NewsItem
 import com.example.foxminded_newsfeed.domain.model.NewsSource
-import com.example.foxminded_newsfeed.domain.usecase.GetNewsFromSelectedProvider
+import com.example.foxminded_newsfeed.domain.usecase.ClickFavoriteButtonOnItem
 import com.example.foxminded_newsfeed.ui.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,16 +16,38 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsFromSelectedProviderVM @Inject constructor(
-    private val getNewsFromSelectedProvider: GetNewsFromSelectedProvider
+    private val clickFavoriteButtonOnItem: ClickFavoriteButtonOnItem,
+    private val generalUIState: MutableStateFlow<UIState>
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(UIState())
-    val uiState: StateFlow<UIState> = _uiState.asStateFlow()
+    val uiState: StateFlow<UIState> = generalUIState.asStateFlow()
+    fun clickFavoriteButton(newsItem: NewsItem) {
+        generalUIState.update { state ->
+            val newState: MutableList<NewsItem> = ArrayList()
+            state.allNewsList.forEach { item ->
+                if (item.id == newsItem.id) {
+                    newState.add(item.copy(isFavorites = if (item.isFavorites == 1) 0 else 1))
+                } else {
+                    newState.add(item)
+                }
+            }
+            state.copy(allNewsList = newState.toList())
+        }
+        if (generalUIState.value.selectedNewsList.isNotEmpty()) {
+            generalUIState.update { state ->
+                state.copy(selectedNewsList = state.allNewsList.filter { it.newsSource == state.selectedNewsList[0].newsSource })
+            }
+        }
+        viewModelScope.launch {
+            clickFavoriteButtonOnItem.cLick(newsItem)
+        }
+    }
+
 
     fun newsFromSelectedSource(newsSource: NewsSource) {
         viewModelScope.launch {
-            _uiState.update {
-                it.copy(newsList = getNewsFromSelectedProvider.get(newsSource))
+            generalUIState.update { state ->
+                state.copy(selectedNewsList = state.allNewsList.filter { it.newsSource == newsSource })
             }
         }
     }

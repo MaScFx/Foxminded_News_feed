@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.foxminded_newsfeed.R
+import com.example.foxminded_newsfeed.domain.model.NewsItem
 import com.example.foxminded_newsfeed.domain.model.NewsSource
 import com.example.foxminded_newsfeed.ui.theme.ItemsBackground
 import com.example.foxminded_newsfeed.ui.theme.PrimaryOrange
@@ -38,13 +40,11 @@ import java.time.ZonedDateTime
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ItemNews(
-    imgUrl: String,
-    title: String,
-    newsSource: NewsSource,
-    publishedTime: ZonedDateTime,
-    isFavorites: Boolean
+    newsItem: NewsItem,
+    onFavoriteButtonClick: (NewsItem) -> Unit
 ) {
-    val secSincePubDate = (ZonedDateTime.now().toEpochSecond() - publishedTime.toEpochSecond())
+    val secSincePubDate =
+        (ZonedDateTime.now().toEpochSecond() - newsItem.publicationTime.toEpochSecond())
 
     val timeForItemPrint = when (secSincePubDate) {
         in 0..59 -> "now"
@@ -67,8 +67,8 @@ fun ItemNews(
                 .padding(start = 26.dp, bottom = 9.dp, top = 9.dp, end = 14.dp)
         ) {
             GlideImage(
-                model = imgUrl,
-                contentDescription = title,
+                model = newsItem.imgUrl,
+                contentDescription = newsItem.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .width(114.dp)
@@ -95,7 +95,7 @@ fun ItemNews(
                             .background(PrimaryOrange)
                     ) {
                         Text(
-                            text = newsSource.name,
+                            text = newsItem.newsSource.name,
                             fontSize = 14.sp,
                             fontFamily = FontFamily(Font(R.font.poppins)),
                             modifier = Modifier.align(Alignment.Center)
@@ -111,7 +111,7 @@ fun ItemNews(
                 }
 
                 Text(
-                    text = title,
+                    text = newsItem.title,
                     fontSize = 13.sp,
                     fontFamily = FontFamily(Font(R.font.poppins_extrabold)),
                     maxLines = 3
@@ -120,10 +120,10 @@ fun ItemNews(
 
             }
         }
-        val favoriteIcon = if (isFavorites) R.drawable.bookmark_selected
+        val favoriteIcon = if (newsItem.isFavorites==1) R.drawable.bookmark_selected
         else R.drawable.bookmark
 
-        val contentDescription = if (isFavorites) R.string.article_in_favorites
+        val contentDescription = if (newsItem.isFavorites==1) R.string.article_in_favorites
         else R.string.article_is_not_favorites
 
         Image(
@@ -134,6 +134,7 @@ fun ItemNews(
                 .align(Alignment.BottomEnd)
                 .height(28.dp)
                 .width(28.dp)
+                .clickable(enabled = true, onClick = { onFavoriteButtonClick(newsItem) })
         )
     }
 
@@ -144,11 +145,15 @@ fun ItemNews(
 @Composable
 fun ItemNewsPreview() {
     ItemNews(
-        imgUrl = "https://cpad.ask.fm/865/242/195/-9996995-2020i7r-er5rgsls2hkd5p0/large/_pcfqBsO9Ck.jpg",
-        title = "Good news!! Your DOG Win five million dollars! Graz!",
-        publishedTime = ZonedDateTime.now(),
-        newsSource = NewsSource.Reddit,
-        isFavorites = true,
-//        currentTime = ZonedDateTime.now()
+        newsItem = NewsItem(
+            imgUrl = "https://cpad.ask.fm/865/242/195/-9996995-2020i7r-er5rgsls2hkd5p0/large/_pcfqBsO9Ck.jpg",
+            title = "Good news!! Your DOG Win five million dollars! Graz!",
+            publicationTime = ZonedDateTime.now(),
+            newsSource = NewsSource.Reddit,
+            isFavorites = 1,
+            id = "123",
+            link = "n",
+        ),
+        onFavoriteButtonClick = {}
     )
 }

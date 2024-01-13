@@ -5,7 +5,7 @@ import com.example.foxminded_newsfeed.data.NewsRepositoryImpl
 import com.example.foxminded_newsfeed.data.network.reddit.RedditRetrofitClient
 import com.example.foxminded_newsfeed.data.network.welt.WeltRetrofitClient
 import com.example.foxminded_newsfeed.data.room.MainDB
-import com.example.foxminded_newsfeed.domain.repository.NewsRepository
+import com.example.foxminded_newsfeed.data.NewsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

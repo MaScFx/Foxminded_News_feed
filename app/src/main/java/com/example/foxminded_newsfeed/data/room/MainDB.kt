@@ -6,11 +6,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [LastNewsEntity::class, FavoriteNewsEntity::class], version = 1)
+@Database(entities = [NewsEntity::class], version = 1)
 @TypeConverters(ZonedDateTimeConverter::class)
 abstract class MainDB : RoomDatabase() {
     abstract val dao: Dao
-//    abstract fun getDao(): Dao
 
     companion object {
         fun getDataBase(context: Context): MainDB {
@@ -26,7 +25,6 @@ abstract class MainDB : RoomDatabase() {
                 INSTANCE = instance
                 instance
             }
-//            return Room.databaseBuilder(context, MainDB::class.java, "main.db").build()
         }
     }
 }

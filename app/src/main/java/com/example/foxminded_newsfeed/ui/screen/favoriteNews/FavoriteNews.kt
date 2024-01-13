@@ -9,7 +9,9 @@ import com.example.foxminded_newsfeed.ui.LazyItemsColumn
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun FavoriteNews(favoriteNewsVM: FavoriteNewsVM){
+fun FavoriteNews(favoriteNewsVM: FavoriteNewsVM) {
     val newsList by favoriteNewsVM.favoriteNewsFlow.collectAsState(initial = emptyList())
-    LazyItemsColumn(newsList)
+    LazyItemsColumn(
+        listNewsItems = newsList,
+        onFavoriteButtonClick = { favoriteNewsVM.clickFavoriteButton(it) })
 }

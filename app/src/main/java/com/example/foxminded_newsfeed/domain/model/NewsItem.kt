@@ -9,5 +9,6 @@ data class NewsItem(
     var title: String,
     val newsSource: NewsSource,
     val publicationTime: ZonedDateTime,
-    val isFavorites: Boolean
+    val isFavorites: Int
+    // 1 - true, other =false. Room cannot use boolean
 )

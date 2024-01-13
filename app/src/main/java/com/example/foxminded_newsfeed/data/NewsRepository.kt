@@ -1,4 +1,4 @@
-package com.example.foxminded_newsfeed.domain.repository
+package com.example.foxminded_newsfeed.data
 
 import com.example.foxminded_newsfeed.domain.model.NewsItem
 import com.example.foxminded_newsfeed.domain.model.NewsSource
@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface NewsRepository {
     suspend fun checkNewFromSource(newsSource: NewsSource): List<NewsItem>
     fun getNewsFromBD(): Flow<List<NewsItem>>
-    suspend fun getFavoriteNews(): List<NewsItem>
-    suspend fun initTestData()
+    suspend fun saveNewsItemInDB(newsItem: NewsItem)
+    suspend fun getFavoriteNews(): Flow<List<NewsItem>>
+    suspend fun delete(itemID: String)
 }

@@ -12,27 +12,18 @@ import java.io.ByteArrayOutputStream
 import java.time.ZonedDateTime
 
 @Entity
-data class LastNewsEntity(
+data class NewsEntity(
     @PrimaryKey(autoGenerate = false)
     val id: String,
     val link: String,
     val imgUrl: String,
-    val title: String,
-    val newsSource: NewsSource,
-    val publishedTime: ZonedDateTime,
-)
-@Entity
-data class FavoriteNewsEntity(
-    @PrimaryKey(autoGenerate = false)
-    val id: String,
-    val link: String,
     var img: Bitmap? = null,
-    val imgUrl: String,
     val title: String,
     val newsSource: NewsSource,
     val publishedTime: ZonedDateTime,
+    val isFavorite: Int
+    // 1 - true, other =false. Room cannot use boolean
 )
-
 class ZonedDateTimeConverter{
     @TypeConverter
     fun zonedDateTimeToString(time: ZonedDateTime):String{

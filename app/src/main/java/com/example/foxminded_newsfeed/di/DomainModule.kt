@@ -1,6 +1,7 @@
 package com.example.foxminded_newsfeed.di
 
-import com.example.foxminded_newsfeed.domain.repository.NewsRepository
+import com.example.foxminded_newsfeed.data.NewsRepository
+import com.example.foxminded_newsfeed.domain.usecase.ClickFavoriteButtonOnItem
 import com.example.foxminded_newsfeed.domain.usecase.GetFavoriteNews
 import com.example.foxminded_newsfeed.domain.usecase.GetNews
 import com.example.foxminded_newsfeed.domain.usecase.GetNewsFromSelectedProvider
@@ -30,6 +31,12 @@ class DomainModule {
     @Singleton
     fun getNewsFromSelectedProviderProvider(newsRepository: NewsRepository): GetNewsFromSelectedProvider {
         return GetNewsFromSelectedProvider(newsRepository = newsRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun getAddNewsToFavoriteProvider(newsRepository: NewsRepository): ClickFavoriteButtonOnItem {
+        return ClickFavoriteButtonOnItem(newsRepository = newsRepository)
     }
 
 }
