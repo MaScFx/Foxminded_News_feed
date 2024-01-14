@@ -1,11 +1,7 @@
 package com.example.foxminded_newsfeed.ui.screen.allNews
 
-import android.content.Context
-import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foxminded_newsfeed.domain.model.NewsItem
