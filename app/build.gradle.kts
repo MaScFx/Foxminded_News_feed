@@ -97,6 +97,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
+    //Chrome custom tabs
+    implementation("androidx.browser:browser:1.7.0")
+
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")

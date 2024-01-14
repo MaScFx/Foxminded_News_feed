@@ -15,6 +15,7 @@ import com.example.foxminded_newsfeed.domain.model.NewsItem
 fun LazyItemsColumn(
     listNewsItems: List<NewsItem>,
     onFavoriteButtonClick: (NewsItem) -> Unit,
+    onItemCLick:(NewsItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val sortedList = listNewsItems.toMutableList()
@@ -29,7 +30,8 @@ fun LazyItemsColumn(
         items(items = sortedList) { news ->
             ItemNews(
                 newsItem = news,
-                onFavoriteButtonClick = onFavoriteButtonClick
+                onFavoriteButtonClick = onFavoriteButtonClick,
+                onItemCLick = onItemCLick
             )
         }
     }

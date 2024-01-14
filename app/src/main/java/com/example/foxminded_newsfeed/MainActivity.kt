@@ -27,6 +27,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -73,20 +74,16 @@ fun Greeting(
     favoriteNewsVM: FavoriteNewsVM,
     newsFromSelectedProviderVM: NewsFromSelectedProviderVM
 ) {
-
     val items = listOf<NavItemState>(
         NavItemState(
-            contentDescription = "all news",
-            selectedIcon = ImageVector.vectorResource(R.drawable.eye_selected),
-            unselectedIcon = ImageVector.vectorResource(R.drawable.eye)
+            contentDescription = stringResource(R.string.all_news),
+            icon = ImageVector.vectorResource(R.drawable.eye),
         ), NavItemState(
-            contentDescription = "select news provider",
-            selectedIcon = ImageVector.vectorResource(R.drawable.layers_selected),
-            unselectedIcon = ImageVector.vectorResource(R.drawable.layers)
+            contentDescription = stringResource(R.string.select_news_provider),
+            icon = ImageVector.vectorResource(R.drawable.layers),
         ), NavItemState(
-            contentDescription = "selected articles",
-            selectedIcon = ImageVector.vectorResource(R.drawable.bookmark_selected),
-            unselectedIcon = ImageVector.vectorResource(R.drawable.bookmark)
+            contentDescription = stringResource(R.string.selected_articles),
+            icon = ImageVector.vectorResource(R.drawable.bookmark_selected),
         )
     )
 
@@ -96,7 +93,7 @@ fun Greeting(
     Scaffold(topBar = {
         TopAppBar(title = {
             Text(
-                text = "News Feed",
+                text = stringResource(R.string.news_feed),
                 textAlign = TextAlign.Center,
                 fontSize = 14.sp,
                 fontFamily = FontFamily(Font(R.font.poppins)),
@@ -108,7 +105,7 @@ fun Greeting(
             IconButton(onClick = {}) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.bookmark),
-                    contentDescription = "bookmark"
+                    contentDescription = stringResource(R.string.bookmark)
                 )
             }
         })
@@ -121,8 +118,7 @@ fun Greeting(
                         onClick = { bottomNavState = index },
                         icon = {
                             Icon(
-                                imageVector = if (bottomNavState == index) navItemState.unselectedIcon
-                                else navItemState.selectedIcon,
+                                imageVector = navItemState.icon,
                                 tint = if (bottomNavState == index) PrimaryOrange
                                 else LightGrey,
                                 contentDescription = navItemState.contentDescription,
@@ -150,7 +146,7 @@ fun Greeting(
 }
 
 data class NavItemState(
-    val selectedIcon: ImageVector, val unselectedIcon: ImageVector, val contentDescription: String
+    val icon: ImageVector, val contentDescription: String
 )
 
 

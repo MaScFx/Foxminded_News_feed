@@ -41,7 +41,8 @@ import java.time.ZonedDateTime
 @Composable
 fun ItemNews(
     newsItem: NewsItem,
-    onFavoriteButtonClick: (NewsItem) -> Unit
+    onFavoriteButtonClick: (NewsItem) -> Unit,
+    onItemCLick: (NewsItem) -> Unit
 ) {
     val secSincePubDate =
         (ZonedDateTime.now().toEpochSecond() - newsItem.publicationTime.toEpochSecond())
@@ -65,6 +66,7 @@ fun ItemNews(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(start = 26.dp, bottom = 9.dp, top = 9.dp, end = 14.dp)
+                .clickable { onItemCLick(newsItem) }
         ) {
             GlideImage(
                 model = newsItem.imgUrl,
@@ -154,6 +156,7 @@ fun ItemNewsPreview() {
             id = "123",
             link = "n",
         ),
-        onFavoriteButtonClick = {}
+        onFavoriteButtonClick = {},
+        onItemCLick = {}
     )
 }

@@ -1,7 +1,10 @@
 package com.example.foxminded_newsfeed.ui.screen.newsFromSelectedProvider
 
+import android.content.Context
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -11,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -19,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.foxminded_newsfeed.R
+import com.example.foxminded_newsfeed.domain.model.NewsItem
 import com.example.foxminded_newsfeed.domain.model.NewsSource
 import com.example.foxminded_newsfeed.ui.LazyItemsColumn
 import com.example.foxminded_newsfeed.ui.theme.sourceColorReddit
@@ -29,6 +34,7 @@ import com.example.foxminded_newsfeed.utils.getFakeNewsItems
 @Composable
 fun NewsFromSelectedProvider(newsFromSelectedProviderVM: NewsFromSelectedProviderVM) {
     val newsList by newsFromSelectedProviderVM.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     Column {
         Text(
@@ -67,8 +73,16 @@ fun NewsFromSelectedProvider(newsFromSelectedProviderVM: NewsFromSelectedProvide
         }
         LazyItemsColumn(
             listNewsItems = newsList.selectedNewsList,
-            onFavoriteButtonClick = { newsFromSelectedProviderVM.clickFavoriteButton(it) })
+            onFavoriteButtonClick = { newsFromSelectedProviderVM.clickFavoriteButton(it) },
+            onItemCLick = {openChromeCustomTabs(newsItem = it, context = context)})
     }
+}
+
+fun openChromeCustomTabs(newsItem: NewsItem, context: Context) {
+    val intent: CustomTabsIntent = CustomTabsIntent.Builder()
+        .build()
+    intent.launchUrl(context, Uri.parse(newsItem.link))
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -76,5 +90,5 @@ fun NewsFromSelectedProvider(newsFromSelectedProviderVM: NewsFromSelectedProvide
 @Composable
 fun NewsFromSelectedProviderPreview() {
     val listFakeItems = getFakeNewsItems()
-    LazyItemsColumn(listFakeItems, {})
+    LazyItemsColumn(listFakeItems, {}, {})
 }
