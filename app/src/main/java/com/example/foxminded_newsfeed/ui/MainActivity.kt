@@ -1,4 +1,4 @@
-package com.example.foxminded_newsfeed
+package com.example.foxminded_newsfeed.ui
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -7,10 +7,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.VectorConverter
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,18 +29,25 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.foxminded_newsfeed.R
 import com.example.foxminded_newsfeed.ui.screen.allNews.AllNews
 import com.example.foxminded_newsfeed.ui.screen.allNews.AllNewsVM
 import com.example.foxminded_newsfeed.ui.screen.favoriteNews.FavoriteNews
@@ -53,27 +68,31 @@ class MainActivity : ComponentActivity() {
         val allNewsVM: AllNewsVM by viewModels()
         val favoriteNewsVM: FavoriteNewsVM by viewModels()
         val newsFromSelectedVM: NewsFromSelectedProviderVM by viewModels()
+        val mainActivityVM: MainActivityVM by viewModels()
 
         setContent {
-            Greeting(
+            MainScreen(
                 allNewsVM = allNewsVM,
                 favoriteNewsVM = favoriteNewsVM,
-                newsFromSelectedProviderVM = newsFromSelectedVM
+                newsFromSelectedProviderVM = newsFromSelectedVM,
+                mainActivityVM = mainActivityVM
             )
         }
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun Greeting(
+fun MainScreen(
     modifier: Modifier = Modifier,
     allNewsVM: AllNewsVM,
     favoriteNewsVM: FavoriteNewsVM,
-    newsFromSelectedProviderVM: NewsFromSelectedProviderVM
+    newsFromSelectedProviderVM: NewsFromSelectedProviderVM,
+    mainActivityVM :MainActivityVM
 ) {
+    val uiState = mainActivityVM.generalUIState.collectAsState()
     val items = listOf<NavItemState>(
         NavItemState(
             contentDescription = stringResource(R.string.all_news),
@@ -131,16 +150,36 @@ fun Greeting(
         }
 
     ) {
+
+        val pullRefreshState = rememberPullRefreshState(
+            refreshing = uiState.value.isRefreshing,
+            onRefresh = { mainActivityVM.refreshNews() }
+        )
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
+                .pullRefresh(pullRefreshState)
         ) {
             when (bottomNavState) {
                 0 -> AllNews(allNewsVM = allNewsVM)
                 1 -> NewsFromSelectedProvider(newsFromSelectedProviderVM = newsFromSelectedProviderVM)
                 2 -> FavoriteNews(favoriteNewsVM = favoriteNewsVM)
             }
+//            CircularProgressIndicator(
+//                modifier = Modifier.align(Alignment.Center).size(70.dp),
+//                strokeWidth = 17.dp,
+//                color = Brush.horizontalGradient(listOf(PrimaryOrange, White),  tileMode = TileMode.Repeated),
+//                strokeCap = StrokeCap.Round
+//
+//            )
+            PullRefreshIndicator(
+                modifier = Modifier.align(Alignment.Center).size(50.dp),
+                refreshing = uiState.value.isRefreshing,
+                state = pullRefreshState,
+                contentColor = PrimaryOrange
+//                contentColor = Brush.horizontalGradient(listOf(PrimaryOrange, White))
+            )
         }
     }
 }

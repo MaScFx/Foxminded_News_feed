@@ -6,8 +6,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface NewsRepository {
     suspend fun checkNewFromSource(newsSource: NewsSource): List<NewsItem>
-    fun getNewsFromBD(): Flow<List<NewsItem>>
+    suspend fun getNewsFromBD(): List<NewsItem>
     suspend fun saveNewsItemInDB(newsItem: NewsItem)
     suspend fun getFavoriteNews(): Flow<List<NewsItem>>
     suspend fun delete(itemID: String)
+    suspend fun deleteAllNotFavoriteItems()
 }

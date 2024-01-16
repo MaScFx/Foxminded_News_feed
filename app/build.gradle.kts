@@ -71,7 +71,8 @@ dependencies {
 
     //Glide
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
-    implementation("androidx.room:room-ktx:2.6.1")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
     //Tests
     testImplementation("junit:junit:4.13.2")
@@ -101,10 +102,13 @@ dependencies {
     implementation("androidx.browser:browser:1.7.0")
 
     val room_version = "2.6.1"
-
+    implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
+
+    //swipeLayout
+    implementation("androidx.compose.material:material:1.5.4")
 
 
 }

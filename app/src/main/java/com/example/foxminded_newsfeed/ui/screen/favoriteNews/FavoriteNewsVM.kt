@@ -1,5 +1,6 @@
 package com.example.foxminded_newsfeed.ui.screen.favoriteNews
 
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foxminded_newsfeed.domain.model.NewsItem
@@ -8,6 +9,9 @@ import com.example.foxminded_newsfeed.domain.usecase.GetFavoriteNews
 import com.example.foxminded_newsfeed.ui.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,44 +21,38 @@ class FavoriteNewsVM @Inject constructor(
     private val getFavoriteNews: GetFavoriteNews,
     private val clickFavoriteButtonOnItem: ClickFavoriteButtonOnItem,
     private val generalUIState: MutableStateFlow<UIState>
-) :
-    ViewModel() {
+) : ViewModel() {
 
-    //    private val _uiState = MutableStateFlow(generalUIState)
-//    val uiState: StateFlow<UIState> = s.asStateFlow()
-    val favoriteNewsFlow = getFavoriteNews.get()
+    val uiState: StateFlow<UIState> = generalUIState.asStateFlow()
     fun clickFavoriteButton(newsItem: NewsItem) {
         viewModelScope.launch {
             clickFavoriteButtonOnItem.cLick(newsItem)
         }
         generalUIState.update { state ->
             val newState: MutableList<NewsItem> = ArrayList()
-            state.allNewsList.forEach { item ->
+            state.allNews.forEach { item ->
                 if (item.id == newsItem.id) {
                     newState.add(item.copy(isFavorites = if (item.isFavorites == 1) 0 else 1))
                 } else {
                     newState.add(item)
                 }
             }
-            state.copy(allNewsList = newState.toList())
+            state.copy(allNews = newState.toList())
         }
-        if (generalUIState.value.selectedNewsList.isNotEmpty()){
+        if (generalUIState.value.selectedNews.isNotEmpty()) {
             generalUIState.update { state ->
-                state.copy(selectedNewsList = state.allNewsList.filter { it.newsSource == state.selectedNewsList[0].newsSource })
+                state.copy(selectedNews = state.allNews.filter { it.newsSource == state.selectedNews[0].newsSource })
             }
         }
     }
 
-//    init {
-//        viewModelScope.launch {
-//            newsFlow = getFavoriteNews.get().stateIn(viewModelScope)
-
-//            val itemList: List<NewsItem> = getFavoriteNews.get().coll
-//
-//            _uiState.update { c ->
-//                c.copy(newsList = itemList)
-//            }
-//        }
-//
-//    }
+    init {
+        viewModelScope.launch {
+            getFavoriteNews.get().collect {
+                generalUIState.update { c ->
+                    c.copy(favoriteNews = it)
+                }
+            }
+        }
+    }
 }

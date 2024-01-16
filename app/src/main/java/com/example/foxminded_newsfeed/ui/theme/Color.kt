@@ -7,6 +7,7 @@ val White = Color(0xFFFFFFFF)
 val DarkGrey = Color(0xFF969696)
 val LightGrey = Color(0xFFF2F2F2)
 val ItemsBackground = Color(0xFFF3F3F3)
+val RedTransparent = Color(0xD6FF0000)
 
 val sourceColorWelt = Color(0xFF4A86A1)
 val sourceColorReddit = Color(0xFFFFAA00)

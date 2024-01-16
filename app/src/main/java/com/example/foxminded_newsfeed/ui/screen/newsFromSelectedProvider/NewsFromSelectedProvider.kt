@@ -33,7 +33,7 @@ import com.example.foxminded_newsfeed.utils.getFakeNewsItems
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NewsFromSelectedProvider(newsFromSelectedProviderVM: NewsFromSelectedProviderVM) {
-    val newsList by newsFromSelectedProviderVM.uiState.collectAsStateWithLifecycle()
+    val uiState by newsFromSelectedProviderVM.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     Column {
@@ -72,7 +72,7 @@ fun NewsFromSelectedProvider(newsFromSelectedProviderVM: NewsFromSelectedProvide
             }
         }
         LazyItemsColumn(
-            listNewsItems = newsList.selectedNewsList,
+            listNewsItems = uiState.selectedNews,
             onFavoriteButtonClick = { newsFromSelectedProviderVM.clickFavoriteButton(it) },
             onItemCLick = {openChromeCustomTabs(newsItem = it, context = context)})
     }

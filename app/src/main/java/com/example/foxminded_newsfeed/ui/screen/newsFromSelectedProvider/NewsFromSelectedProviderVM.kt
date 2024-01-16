@@ -24,18 +24,18 @@ class NewsFromSelectedProviderVM @Inject constructor(
     fun clickFavoriteButton(newsItem: NewsItem) {
         generalUIState.update { state ->
             val newState: MutableList<NewsItem> = ArrayList()
-            state.allNewsList.forEach { item ->
+            state.allNews.forEach { item ->
                 if (item.id == newsItem.id) {
                     newState.add(item.copy(isFavorites = if (item.isFavorites == 1) 0 else 1))
                 } else {
                     newState.add(item)
                 }
             }
-            state.copy(allNewsList = newState.toList())
+            state.copy(allNews = newState.toList())
         }
-        if (generalUIState.value.selectedNewsList.isNotEmpty()) {
+        if (generalUIState.value.selectedNews.isNotEmpty()) {
             generalUIState.update { state ->
-                state.copy(selectedNewsList = state.allNewsList.filter { it.newsSource == state.selectedNewsList[0].newsSource })
+                state.copy(selectedNews = state.allNews.filter { it.newsSource == state.selectedNews[0].newsSource })
             }
         }
         viewModelScope.launch {
@@ -47,7 +47,7 @@ class NewsFromSelectedProviderVM @Inject constructor(
     fun newsFromSelectedSource(newsSource: NewsSource) {
         viewModelScope.launch {
             generalUIState.update { state ->
-                state.copy(selectedNewsList = state.allNewsList.filter { it.newsSource == newsSource })
+                state.copy(selectedNews = state.allNews.filter { it.newsSource == newsSource })
             }
         }
     }

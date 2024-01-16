@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foxminded_newsfeed.domain.model.NewsItem
+import com.example.foxminded_newsfeed.domain.model.UseCaseAnswer
 import com.example.foxminded_newsfeed.domain.usecase.ClickFavoriteButtonOnItem
 import com.example.foxminded_newsfeed.domain.usecase.GetNews
 import com.example.foxminded_newsfeed.ui.UIState
@@ -29,18 +30,19 @@ class AllNewsVM @Inject constructor(
         generalUIState.update { state ->
             val newState: MutableList<NewsItem> = ArrayList()
 
-            state.allNewsList.forEach { item ->
+            state.allNews.forEach { item ->
                 if (item.id == newsItem.id) {
                     newState.add(item.copy(isFavorites = if (item.isFavorites == 1) 0 else 1))
                 } else {
                     newState.add(item)
                 }
             }
-            state.copy(allNewsList = newState.toList())
+            state.copy(allNews = newState.toList())
+
         }
-        if (generalUIState.value.selectedNewsList.isNotEmpty()) {
+        if (generalUIState.value.selectedNews.isNotEmpty()) {
             generalUIState.update { state ->
-                state.copy(selectedNewsList = state.allNewsList.filter { it.newsSource == state.selectedNewsList[0].newsSource })
+                state.copy(selectedNews = state.allNews.filter { it.newsSource == state.selectedNews[0].newsSource })
             }
         }
 
@@ -49,21 +51,23 @@ class AllNewsVM @Inject constructor(
         }
     }
 
-//    fun onItemClick(newsItem:NewsItem){
-//        val url = newsItem.link
-//        val intent :CustomTabsIntent  = CustomTabsIntent.Builder()
-//            .build();
-//        intent.launchUrl(LocalContext.current, Uri.parse(url));
-//
-//    }
-
+    fun hideErrorMessage(){
+        generalUIState.update { state ->
+            state.copy(
+                showInternetConnectionError = false
+            )
+        }
+    }
 
     init {
         viewModelScope.launch {
-            val itemList: List<NewsItem> = getNews.get()
+            val getNewsAnswer: UseCaseAnswer = getNews.get()
 
-            generalUIState.update { c ->
-                c.copy(allNewsList = itemList)
+            generalUIState.update { state ->
+                state.copy(
+                    allNews = getNewsAnswer.resultList,
+                    showInternetConnectionError = getNewsAnswer.internetIsAvailable
+                )
             }
         }
     }

@@ -15,11 +15,12 @@ import com.example.foxminded_newsfeed.ui.LazyItemsColumn
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun FavoriteNews(favoriteNewsVM: FavoriteNewsVM) {
-    val newsList by favoriteNewsVM.favoriteNewsFlow.collectAsState(initial = emptyList())
+//    val newsList by favoriteNewsVM.favoriteNewsFlow.collectAsState(initial = emptyList())
+    val uiState by favoriteNewsVM.uiState.collectAsState()
     val context = LocalContext.current
 
     LazyItemsColumn(
-        listNewsItems = newsList,
+        listNewsItems = uiState.favoriteNews,
         onFavoriteButtonClick = { favoriteNewsVM.clickFavoriteButton(it) },
         onItemCLick = { openChromeCustomTabs(newsItem = it, context = context) })
 }
@@ -28,5 +29,4 @@ fun openChromeCustomTabs(newsItem: NewsItem, context: Context) {
     val intent: CustomTabsIntent = CustomTabsIntent.Builder()
         .build()
     intent.launchUrl(context, Uri.parse(newsItem.link))
-
 }

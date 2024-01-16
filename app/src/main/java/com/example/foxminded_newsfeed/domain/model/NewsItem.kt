@@ -1,9 +1,11 @@
 package com.example.foxminded_newsfeed.domain.model
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.time.ZonedDateTime
 
 data class NewsItem(
-    val id:String,
+    val id: String,
     val link: String,
     val imgUrl: String,
     var title: String,

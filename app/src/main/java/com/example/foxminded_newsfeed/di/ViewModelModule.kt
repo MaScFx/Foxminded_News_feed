@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import com.example.foxminded_newsfeed.domain.usecase.ClickFavoriteButtonOnItem
 import com.example.foxminded_newsfeed.domain.usecase.GetFavoriteNews
 import com.example.foxminded_newsfeed.domain.usecase.GetNews
+import com.example.foxminded_newsfeed.ui.MainActivityVM
 import com.example.foxminded_newsfeed.ui.UIState
 import com.example.foxminded_newsfeed.ui.screen.allNews.AllNewsVM
 import com.example.foxminded_newsfeed.ui.screen.favoriteNews.FavoriteNewsVM
@@ -20,6 +21,18 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class ViewModelModule {
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    @Provides
+    @Singleton
+    fun mainActivityVMProvider(
+        getNews: GetNews,
+        mutableStateFlow: MutableStateFlow<UIState>
+    ): MainActivityVM {
+        return MainActivityVM(
+            getNews = getNews,
+            generalUIState = mutableStateFlow
+        )
+    }
     @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     @Singleton

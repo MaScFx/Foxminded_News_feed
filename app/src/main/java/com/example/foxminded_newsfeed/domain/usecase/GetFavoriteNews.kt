@@ -5,7 +5,7 @@ import com.example.foxminded_newsfeed.data.NewsRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetFavoriteNews(private val newsRepository: NewsRepository) {
-    fun get(): Flow<List<NewsItem>> {
-        return newsRepository.getNewsFromBD()
+    suspend fun get(): Flow<List<NewsItem>> {
+        return newsRepository.getFavoriteNews()
     }
 }

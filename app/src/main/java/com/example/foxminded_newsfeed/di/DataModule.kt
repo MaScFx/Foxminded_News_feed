@@ -1,6 +1,7 @@
 package com.example.foxminded_newsfeed.di
 
 import android.content.Context
+import com.example.foxminded_newsfeed.data.Converters
 import com.example.foxminded_newsfeed.data.NewsRepositoryImpl
 import com.example.foxminded_newsfeed.data.network.reddit.RedditRetrofitClient
 import com.example.foxminded_newsfeed.data.network.welt.WeltRetrofitClient
@@ -23,13 +24,14 @@ class DataModule {
     fun newsRepositoryProvider(
         mainDB: MainDB,
         weltRetrofitClient: WeltRetrofitClient,
-        redditRetrofitClient: RedditRetrofitClient
+        redditRetrofitClient: RedditRetrofitClient,
+        converters: Converters
     ): NewsRepository {
         return NewsRepositoryImpl(
             mainDB = mainDB,
             weltRetrofitClient = weltRetrofitClient,
-            redditRetrofitClient = redditRetrofitClient
-        )
+            redditRetrofitClient = redditRetrofitClient,
+            converters = converters)
     }
 
     @Provides
@@ -49,4 +51,11 @@ class DataModule {
     fun provideRedditRetrofitClient(): RedditRetrofitClient {
         return RedditRetrofitClient()
     }
+
+    @Provides
+    fun  provideConverters(@ApplicationContext context: Context):Converters{
+        return Converters(context)
+    }
+
+
 }
