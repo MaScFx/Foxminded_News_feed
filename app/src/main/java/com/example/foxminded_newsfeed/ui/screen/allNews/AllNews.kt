@@ -44,36 +44,36 @@ fun AllNews(allNewsVM: AllNewsVM) {
             onFavoriteButtonClick = { allNewsVM.clickFavoriteButton(it) },
             onItemCLick = { openChromeCustomTabs(newsItem = it, context = context) })
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            AnimatedVisibility(visible = newsList.showInternetConnectionError) {
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .background(RedTransparent)
-                    .clickable { allNewsVM.hideErrorMessage() }) {
-
-                    Column(modifier = Modifier.align(Alignment.Center)) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_info),
-                            contentDescription = stringResource(R.string.no_internet_message),
-                            modifier = Modifier
-                                .width(50.dp)
-                                .height(50.dp)
-                                .align(Alignment.CenterHorizontally)
-//                            alignment = Alignment.CenterHorizontally
-                        )
-                        Text(
-                            text = stringResource(R.string.no_internet_message),
-                            fontSize = 20.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_extrabold)),
-                            color = White,
-                            maxLines = 2
-
-                        )
-
-                    }
-                }
-            }
-        }
+//        Box(modifier = Modifier.fillMaxSize()) {
+//            AnimatedVisibility(visible = newsList.showInternetConnectionError) {
+//                Box(modifier = Modifier
+//                    .fillMaxSize()
+//                    .background(RedTransparent)
+//                    .clickable { allNewsVM.hideErrorMessage() }) {
+//
+//                    Column(modifier = Modifier.align(Alignment.Center)) {
+//                        Image(
+//                            painter = painterResource(id = R.drawable.ic_info),
+//                            contentDescription = stringResource(R.string.no_internet_message),
+//                            modifier = Modifier
+//                                .width(50.dp)
+//                                .height(50.dp)
+//                                .align(Alignment.CenterHorizontally)
+////                            alignment = Alignment.CenterHorizontally
+//                        )
+//                        Text(
+//                            text = stringResource(R.string.no_internet_message),
+//                            fontSize = 20.sp,
+//                            fontFamily = FontFamily(Font(R.font.poppins_extrabold)),
+//                            color = White,
+//                            maxLines = 2
+//
+//                        )
+//
+//                    }
+//                }
+//            }
+//        }
     }
 }
 

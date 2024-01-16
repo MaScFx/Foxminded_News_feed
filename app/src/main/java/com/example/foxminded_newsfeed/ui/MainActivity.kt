@@ -7,12 +7,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.ExperimentalMaterialApi
@@ -39,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.Font
@@ -56,6 +64,7 @@ import com.example.foxminded_newsfeed.ui.screen.newsFromSelectedProvider.NewsFro
 import com.example.foxminded_newsfeed.ui.theme.DarkGrey
 import com.example.foxminded_newsfeed.ui.theme.LightGrey
 import com.example.foxminded_newsfeed.ui.theme.PrimaryOrange
+import com.example.foxminded_newsfeed.ui.theme.RedTransparent
 import com.example.foxminded_newsfeed.ui.theme.White
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -111,10 +120,8 @@ fun MainScreen(
     var bottomNavState by rememberSaveable {
         mutableIntStateOf(0)
     }
-//    val pagerState = rememberPagerState(pageCount = { items.size })
     val pagerState = rememberPagerState(pageCount = { items.size })
 
-    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     Scaffold(topBar = {
         TopAppBar(title = {
@@ -144,19 +151,9 @@ fun MainScreen(
                         selected = bottomNavState == index,
                         onClick = {
                             bottomNavState = index
-//                            coroutineScope.launch {
-//                                pagerState.animateScrollToPage(index)
-//                            }
-//                            BottomNavItemClickHandler(index, pagerState)
-//                            coroutineScope {
-//
-//                            }
                             scope.launch {
                                 pagerState.animateScrollToPage(index)
                             }
-
-
-//                            pagerState.animateScrollToPage(index)
                         },
                         icon = {
                             Icon(
@@ -178,6 +175,7 @@ fun MainScreen(
             refreshing = uiState.value.isRefreshing,
             onRefresh = { mainActivityVM.refreshNews() }
         )
+
         HorizontalPager(state = pagerState) { page ->
             bottomNavState = pagerState.currentPage
             Box(
@@ -200,22 +198,43 @@ fun MainScreen(
                     refreshing = uiState.value.isRefreshing,
                     state = pullRefreshState,
                     contentColor = PrimaryOrange
-//                contentColor = Brush.horizontalGradient(listOf(PrimaryOrange, White))
                 )
-            }
-//            CircularProgressIndicator(
-//                modifier = Modifier.align(Alignment.Center).size(70.dp),
-//                strokeWidth = 17.dp,
-//                color = Brush.horizontalGradient(listOf(PrimaryOrange, White),  tileMode = TileMode.Repeated),
-//                strokeCap = StrokeCap.Round
-//
-//            )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    AnimatedVisibility(visible = uiState.value.showInternetConnectionError) {
+                        Box(modifier = Modifier
+                            .fillMaxSize()
+                            .background(RedTransparent)
+                            .clickable { allNewsVM.hideErrorMessage() }) {
 
+                            Column(modifier = Modifier.align(Alignment.Center)) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_info),
+                                    contentDescription = stringResource(R.string.no_internet_message),
+                                    modifier = Modifier
+                                        .width(50.dp)
+                                        .height(50.dp)
+                                        .align(Alignment.CenterHorizontally)
+//                            alignment = Alignment.CenterHorizontally
+                                )
+                                Text(
+                                    text = stringResource(R.string.no_internet_message),
+                                    fontSize = 20.sp,
+                                    fontFamily = FontFamily(Font(R.font.poppins_extrabold)),
+                                    color = White,
+                                    maxLines = 2
+
+                                )
+
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
+
 data class NavItemState(
     val icon: ImageVector, val contentDescription: String
 )
-
