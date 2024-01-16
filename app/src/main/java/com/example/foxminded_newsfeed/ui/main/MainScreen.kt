@@ -1,11 +1,7 @@
-package com.example.foxminded_newsfeed.ui
+package com.example.foxminded_newsfeed.ui.main
 
 import android.annotation.SuppressLint
 import android.os.Build
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -45,7 +41,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -66,33 +61,13 @@ import com.example.foxminded_newsfeed.ui.theme.LightGrey
 import com.example.foxminded_newsfeed.ui.theme.PrimaryOrange
 import com.example.foxminded_newsfeed.ui.theme.RedTransparent
 import com.example.foxminded_newsfeed.ui.theme.White
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class MainActivity : ComponentActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val allNewsVM: AllNewsVM by viewModels()
-        val favoriteNewsVM: FavoriteNewsVM by viewModels()
-        val newsFromSelectedVM: NewsFromSelectedProviderVM by viewModels()
-        val mainActivityVM: MainActivityVM by viewModels()
-
-        setContent {
-            MainScreen(
-                allNewsVM = allNewsVM,
-                favoriteNewsVM = favoriteNewsVM,
-                newsFromSelectedProviderVM = newsFromSelectedVM,
-                mainActivityVM = mainActivityVM
-            )
-        }
-    }
-}
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class,
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterialApi::class,
     ExperimentalFoundationApi::class
 )
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -105,24 +80,11 @@ fun MainScreen(
     mainActivityVM: MainActivityVM
 ) {
     val uiState = mainActivityVM.generalUIState.collectAsState()
-    val items = listOf<NavItemState>(
-        NavItemState(
-            contentDescription = stringResource(R.string.all_news),
-            icon = ImageVector.vectorResource(R.drawable.eye),
-        ), NavItemState(
-            contentDescription = stringResource(R.string.select_news_provider),
-            icon = ImageVector.vectorResource(R.drawable.layers),
-        ), NavItemState(
-            contentDescription = stringResource(R.string.selected_articles),
-            icon = ImageVector.vectorResource(R.drawable.bookmark_selected),
-        )
-    )
-    var bottomNavState by rememberSaveable {
-        mutableIntStateOf(0)
-    }
+    val items = getNavItemState()
+    var bottomNavState by rememberSaveable { mutableIntStateOf(0) }
     val pagerState = rememberPagerState(pageCount = { items.size })
-
     val scope = rememberCoroutineScope()
+
     Scaffold(topBar = {
         TopAppBar(title = {
             Text(
@@ -147,34 +109,25 @@ fun MainScreen(
         bottomBar = {
             NavigationBar(containerColor = DarkGrey) {
                 items.forEachIndexed { index, navItemState ->
-                    NavigationBarItem(
-                        selected = bottomNavState == index,
-                        onClick = {
-                            bottomNavState = index
-                            scope.launch {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = navItemState.icon,
-                                tint = if (bottomNavState == index) PrimaryOrange
-                                else LightGrey,
-                                contentDescription = navItemState.contentDescription,
-                            )
+                    NavigationBarItem(selected = bottomNavState == index, onClick = {
+                        bottomNavState = index
+                        scope.launch {
+                            pagerState.animateScrollToPage(index)
                         }
-
-                    )
+                    }, icon = {
+                        Icon(
+                            imageVector = navItemState.icon,
+                            tint = if (bottomNavState == index) PrimaryOrange
+                            else LightGrey,
+                            contentDescription = navItemState.contentDescription,
+                        )
+                    })
                 }
             }
-        }
+        }) { padding ->
 
-    ) { padding ->
-
-        val pullRefreshState = rememberPullRefreshState(
-            refreshing = uiState.value.isRefreshing,
-            onRefresh = { mainActivityVM.refreshNews() }
-        )
+        val pullRefreshState = rememberPullRefreshState(refreshing = uiState.value.isRefreshing,
+            onRefresh = { mainActivityVM.refreshNews() })
 
         HorizontalPager(state = pagerState) { page ->
             bottomNavState = pagerState.currentPage
@@ -214,7 +167,6 @@ fun MainScreen(
                                         .width(50.dp)
                                         .height(50.dp)
                                         .align(Alignment.CenterHorizontally)
-//                            alignment = Alignment.CenterHorizontally
                                 )
                                 Text(
                                     text = stringResource(R.string.no_internet_message),
@@ -222,9 +174,7 @@ fun MainScreen(
                                     fontFamily = FontFamily(Font(R.font.poppins_extrabold)),
                                     color = White,
                                     maxLines = 2
-
                                 )
-
                             }
                         }
                     }
@@ -233,8 +183,3 @@ fun MainScreen(
         }
     }
 }
-
-
-data class NavItemState(
-    val icon: ImageVector, val contentDescription: String
-)

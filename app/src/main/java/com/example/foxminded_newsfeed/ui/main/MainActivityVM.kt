@@ -1,4 +1,4 @@
-package com.example.foxminded_newsfeed.ui
+package com.example.foxminded_newsfeed.ui.main
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foxminded_newsfeed.domain.model.UseCaseAnswer
 import com.example.foxminded_newsfeed.domain.usecase.GetNews
+import com.example.foxminded_newsfeed.ui.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -15,8 +16,7 @@ import javax.inject.Inject
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class MainActivityVM @Inject constructor(
-    val generalUIState: MutableStateFlow<UIState>,
-    val getNews: GetNews
+    val generalUIState: MutableStateFlow<UIState>, val getNews: GetNews
 ) : ViewModel() {
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -41,5 +41,4 @@ class MainActivityVM @Inject constructor(
     init {
         refreshNews()
     }
-
 }

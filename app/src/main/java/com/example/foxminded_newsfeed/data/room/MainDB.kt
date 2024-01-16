@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [NewsEntity::class], version = 1)
+@Database(entities = [NewsEntity::class], version = 1, exportSchema = false)
 @TypeConverters(ZonedDateTimeConverter::class)
 abstract class MainDB : RoomDatabase() {
     abstract val dao: Dao

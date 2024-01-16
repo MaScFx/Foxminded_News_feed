@@ -2,11 +2,11 @@ package com.example.foxminded_newsfeed.di
 
 import android.content.Context
 import com.example.foxminded_newsfeed.data.Converters
+import com.example.foxminded_newsfeed.data.NewsRepository
 import com.example.foxminded_newsfeed.data.NewsRepositoryImpl
 import com.example.foxminded_newsfeed.data.network.reddit.RedditRetrofitClient
 import com.example.foxminded_newsfeed.data.network.welt.WeltRetrofitClient
 import com.example.foxminded_newsfeed.data.room.MainDB
-import com.example.foxminded_newsfeed.data.NewsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +17,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class DataModule {
-
 
     @Provides
     @Singleton
@@ -31,7 +30,8 @@ class DataModule {
             mainDB = mainDB,
             weltRetrofitClient = weltRetrofitClient,
             redditRetrofitClient = redditRetrofitClient,
-            converters = converters)
+            converters = converters
+        )
     }
 
     @Provides
@@ -53,9 +53,7 @@ class DataModule {
     }
 
     @Provides
-    fun  provideConverters(@ApplicationContext context: Context):Converters{
+    fun provideConverters(@ApplicationContext context: Context): Converters {
         return Converters(context)
     }
-
-
 }

@@ -5,9 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foxminded_newsfeed.domain.model.NewsItem
-import com.example.foxminded_newsfeed.domain.model.UseCaseAnswer
 import com.example.foxminded_newsfeed.domain.usecase.ClickFavoriteButtonOnItem
-import com.example.foxminded_newsfeed.domain.usecase.GetNews
 import com.example.foxminded_newsfeed.ui.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +18,6 @@ import javax.inject.Inject
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class AllNewsVM @Inject constructor(
-    private val getNews: GetNews,
     private val clickFavoriteButtonOnItem: ClickFavoriteButtonOnItem,
     private val generalUIState: MutableStateFlow<UIState>
 ) : ViewModel() {
@@ -38,7 +35,6 @@ class AllNewsVM @Inject constructor(
                 }
             }
             state.copy(allNews = newState.toList())
-
         }
         if (generalUIState.value.selectedNews.isNotEmpty()) {
             generalUIState.update { state ->
@@ -51,24 +47,11 @@ class AllNewsVM @Inject constructor(
         }
     }
 
-    fun hideErrorMessage(){
+    fun hideErrorMessage() {
         generalUIState.update { state ->
             state.copy(
                 showInternetConnectionError = false
             )
         }
     }
-
-//    init {
-//        viewModelScope.launch {
-//            val getNewsAnswer: UseCaseAnswer = getNews.get()
-//
-//            generalUIState.update { state ->
-//                state.copy(
-//                    allNews = getNewsAnswer.resultList,
-//                    showInternetConnectionError = getNewsAnswer.internetIsAvailable
-//                )
-//            }
-//        }
-//    }
 }

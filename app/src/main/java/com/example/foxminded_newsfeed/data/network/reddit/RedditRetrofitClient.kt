@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 
 class RedditRetrofitClient {
-    companion object{
+    companion object {
         private const val BASE_URL = "https://www.reddit.com/"
     }
 

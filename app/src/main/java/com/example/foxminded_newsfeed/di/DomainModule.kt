@@ -38,5 +38,4 @@ class DomainModule {
     fun getAddNewsToFavoriteProvider(newsRepository: NewsRepository): ClickFavoriteButtonOnItem {
         return ClickFavoriteButtonOnItem(newsRepository = newsRepository)
     }
-
 }

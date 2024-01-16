@@ -43,7 +43,6 @@ class NewsFromSelectedProviderVM @Inject constructor(
         }
     }
 
-
     fun newsFromSelectedSource(newsSource: NewsSource) {
         viewModelScope.launch {
             generalUIState.update { state ->

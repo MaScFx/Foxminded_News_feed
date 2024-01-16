@@ -16,12 +16,13 @@ fun getFakeNewsItems():List<NewsItem> {
                 publicationTime = ZonedDateTime.now(),
                 newsSource = NewsSource.Reddit,
                 title = "$i Good news!! Your DOG Win five million dollars! Graz!",
-                imgUrl = "https://cpad.ask.fm/865/242/195/-9996995-2020i7r-er5rgsls2hkd5p0/large/_pcfqBsO9Ck.jpg",
-                id = "12312",
-                link = "https:/reddit.com"
+                imgUrl = "",
+                id = "",
+                link = ""
             )
         )
     }
+
     return list
 }
 

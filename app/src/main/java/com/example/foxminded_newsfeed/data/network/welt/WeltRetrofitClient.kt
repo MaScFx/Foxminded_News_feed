@@ -6,10 +6,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 
 class WeltRetrofitClient {
-    companion object{
+    companion object {
         private const val BASE_URL = "https://www.welt.de/"
     }
-
 
     val weltApi: WeltApi by lazy {
         val interceptor = HttpLoggingInterceptor()

@@ -1,8 +1,6 @@
 package com.example.foxminded_newsfeed.data
 
-import android.content.Context
 import android.os.Build
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.foxminded_newsfeed.data.network.reddit.RedditRetrofitClient
 import com.example.foxminded_newsfeed.data.network.welt.WeltRetrofitClient
@@ -10,12 +8,10 @@ import com.example.foxminded_newsfeed.data.room.MainDB
 import com.example.foxminded_newsfeed.domain.model.NewsItem
 import com.example.foxminded_newsfeed.domain.model.NewsSource
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.io.IOException
-import java.lang.Exception
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -47,10 +43,8 @@ class NewsRepositoryImpl @Inject constructor(
                             title = newsModel.title,
                             newsSource = NewsSource.WELT,
                             publicationTime = ZonedDateTime.parse(
-                                newsModel.published,
-                                weltFormatter
-                            )
-                                ?: ZonedDateTime.now(),
+                                newsModel.published, weltFormatter
+                            ) ?: ZonedDateTime.now(),
                             isFavorites = isExistBoolean,
                             link = newsModel.link,
                             id = newsModel.id
@@ -79,8 +73,6 @@ class NewsRepositoryImpl @Inject constructor(
             }
         } catch (e: IOException) {
             e.printStackTrace()
-//            Toast.makeText()
-
         }
         return resultList
     }
@@ -117,23 +109,4 @@ class NewsRepositoryImpl @Inject constructor(
     override suspend fun deleteAllNotFavoriteItems() {
         mainDB.dao.deleteAllNotFavoriteItems()
     }
-
-
 }
-
-
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    override suspend fun initTestData() {
-//        mainDB.dao.insert(
-//            NewsEntity(
-//                id = Random.nextInt(0, 9999999).toString(),
-//                link = "https://cpad.ask.fm/865/242/195/-9996995-2020i7r-er5rgsls2hkd5p0/large/_pcfqBsO9Ck.jpg",
-//                title = "Title ${Random.nextInt(0, 9999999)}",
-//                img = Bitmap.createBitmap(20, 20, Bitmap.Config.ARGB_8888),
-//                newsSource = NewsSource.Reddit,
-//                imgUrl = "https://cpad.ask.fm/865/242/195/-9996995-2020i7r-er5rgsls2hkd5p0/large/_pcfqBsO9Ck.jpg",
-//                publishedTime = ZonedDateTime.now(),
-//                isFavorite = 0
-//            )
-//        )
-//    }

@@ -148,13 +148,13 @@ fun ItemNews(
 fun ItemNewsPreview() {
     ItemNews(
         newsItem = NewsItem(
-            imgUrl = "https://cpad.ask.fm/865/242/195/-9996995-2020i7r-er5rgsls2hkd5p0/large/_pcfqBsO9Ck.jpg",
+            imgUrl = "",
             title = "Good news!! Your DOG Win five million dollars! Graz!",
             publicationTime = ZonedDateTime.now(),
             newsSource = NewsSource.Reddit,
             isFavorites = 1,
-            id = "123",
-            link = "n",
+            id = "",
+            link = "",
         ),
         onFavoriteButtonClick = {},
         onItemCLick = {}

@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,11 +13,9 @@ interface Dao {
 
     @Query("DELETE FROM NewsEntity WHERE id = :newsId")
     suspend fun delete(newsId: String)
+
     @Query("DELETE FROM NewsEntity WHERE isFavorite != 1")
     suspend fun deleteAllNotFavoriteItems()
-
-    @Update
-    suspend fun update(lastNewsEntity: NewsEntity)
 
     @Query("SELECT * FROM NewsEntity")
     fun getAllNews(): List<NewsEntity>
@@ -26,6 +23,7 @@ interface Dao {
     @Query("SELECT * FROM NewsEntity WHERE isFavorite = 1")
 
     fun getFavoriteNews(): Flow<List<NewsEntity>>
+
     @Query("SELECT * FROM NewsEntity WHERE id = :newsId")
     fun getByID(newsId: String): NewsEntity?
 
