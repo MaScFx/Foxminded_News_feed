@@ -7,5 +7,5 @@ data class UIState(
     val selectedNews: List<NewsItem> = ArrayList(),
     val favoriteNews: List<NewsItem> = ArrayList(),
     val showInternetConnectionError: Boolean = false,
-    val isRefreshing : Boolean = false
+    val isRefreshing : Boolean = true
 )

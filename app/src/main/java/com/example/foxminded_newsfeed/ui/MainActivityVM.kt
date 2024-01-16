@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class MainActivityVM @Inject constructor(
     val generalUIState: MutableStateFlow<UIState>,
@@ -35,6 +36,10 @@ class MainActivityVM @Inject constructor(
                 isRefreshing = false
             )
         }
+    }
+
+    init {
+        refreshNews()
     }
 
 }

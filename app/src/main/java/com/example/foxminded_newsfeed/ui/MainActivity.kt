@@ -7,14 +7,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.VectorConverter
-import androidx.compose.foundation.background
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -32,14 +32,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.Font
@@ -59,6 +58,7 @@ import com.example.foxminded_newsfeed.ui.theme.LightGrey
 import com.example.foxminded_newsfeed.ui.theme.PrimaryOrange
 import com.example.foxminded_newsfeed.ui.theme.White
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -82,7 +82,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class,
+    ExperimentalFoundationApi::class
+)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
@@ -90,7 +93,7 @@ fun MainScreen(
     allNewsVM: AllNewsVM,
     favoriteNewsVM: FavoriteNewsVM,
     newsFromSelectedProviderVM: NewsFromSelectedProviderVM,
-    mainActivityVM :MainActivityVM
+    mainActivityVM: MainActivityVM
 ) {
     val uiState = mainActivityVM.generalUIState.collectAsState()
     val items = listOf<NavItemState>(
@@ -105,10 +108,14 @@ fun MainScreen(
             icon = ImageVector.vectorResource(R.drawable.bookmark_selected),
         )
     )
-
     var bottomNavState by rememberSaveable {
         mutableIntStateOf(0)
     }
+//    val pagerState = rememberPagerState(pageCount = { items.size })
+    val pagerState = rememberPagerState(pageCount = { items.size })
+
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     Scaffold(topBar = {
         TopAppBar(title = {
             Text(
@@ -133,8 +140,24 @@ fun MainScreen(
         bottomBar = {
             NavigationBar(containerColor = DarkGrey) {
                 items.forEachIndexed { index, navItemState ->
-                    NavigationBarItem(selected = bottomNavState == index,
-                        onClick = { bottomNavState = index },
+                    NavigationBarItem(
+                        selected = bottomNavState == index,
+                        onClick = {
+                            bottomNavState = index
+//                            coroutineScope.launch {
+//                                pagerState.animateScrollToPage(index)
+//                            }
+//                            BottomNavItemClickHandler(index, pagerState)
+//                            coroutineScope {
+//
+//                            }
+                            scope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+
+
+//                            pagerState.animateScrollToPage(index)
+                        },
                         icon = {
                             Icon(
                                 imageVector = navItemState.icon,
@@ -149,22 +172,36 @@ fun MainScreen(
             }
         }
 
-    ) {
+    ) { padding ->
 
         val pullRefreshState = rememberPullRefreshState(
             refreshing = uiState.value.isRefreshing,
             onRefresh = { mainActivityVM.refreshNews() }
         )
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
-                .pullRefresh(pullRefreshState)
-        ) {
-            when (bottomNavState) {
-                0 -> AllNews(allNewsVM = allNewsVM)
-                1 -> NewsFromSelectedProvider(newsFromSelectedProviderVM = newsFromSelectedProviderVM)
-                2 -> FavoriteNews(favoriteNewsVM = favoriteNewsVM)
+        HorizontalPager(state = pagerState) { page ->
+            bottomNavState = pagerState.currentPage
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .pullRefresh(pullRefreshState)
+            ) {
+
+                when (page) {
+                    0 -> AllNews(allNewsVM = allNewsVM)
+                    1 -> NewsFromSelectedProvider(newsFromSelectedProviderVM = newsFromSelectedProviderVM)
+                    2 -> FavoriteNews(favoriteNewsVM = favoriteNewsVM)
+                }
+
+                PullRefreshIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .size(50.dp),
+                    refreshing = uiState.value.isRefreshing,
+                    state = pullRefreshState,
+                    contentColor = PrimaryOrange
+//                contentColor = Brush.horizontalGradient(listOf(PrimaryOrange, White))
+                )
             }
 //            CircularProgressIndicator(
 //                modifier = Modifier.align(Alignment.Center).size(70.dp),
@@ -173,13 +210,7 @@ fun MainScreen(
 //                strokeCap = StrokeCap.Round
 //
 //            )
-            PullRefreshIndicator(
-                modifier = Modifier.align(Alignment.Center).size(50.dp),
-                refreshing = uiState.value.isRefreshing,
-                state = pullRefreshState,
-                contentColor = PrimaryOrange
-//                contentColor = Brush.horizontalGradient(listOf(PrimaryOrange, White))
-            )
+
         }
     }
 }
@@ -187,5 +218,4 @@ fun MainScreen(
 data class NavItemState(
     val icon: ImageVector, val contentDescription: String
 )
-
 

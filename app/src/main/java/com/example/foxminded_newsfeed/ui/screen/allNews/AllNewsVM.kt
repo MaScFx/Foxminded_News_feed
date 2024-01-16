@@ -59,16 +59,16 @@ class AllNewsVM @Inject constructor(
         }
     }
 
-    init {
-        viewModelScope.launch {
-            val getNewsAnswer: UseCaseAnswer = getNews.get()
-
-            generalUIState.update { state ->
-                state.copy(
-                    allNews = getNewsAnswer.resultList,
-                    showInternetConnectionError = getNewsAnswer.internetIsAvailable
-                )
-            }
-        }
-    }
+//    init {
+//        viewModelScope.launch {
+//            val getNewsAnswer: UseCaseAnswer = getNews.get()
+//
+//            generalUIState.update { state ->
+//                state.copy(
+//                    allNews = getNewsAnswer.resultList,
+//                    showInternetConnectionError = getNewsAnswer.internetIsAvailable
+//                )
+//            }
+//        }
+//    }
 }
