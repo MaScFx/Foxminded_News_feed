@@ -2,6 +2,7 @@ package com.example.foxminded_newsfeed.data.room
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import androidx.core.graphics.createBitmap
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
@@ -12,8 +13,7 @@ import java.time.ZonedDateTime
 
 @Entity
 data class NewsEntity(
-    @PrimaryKey(autoGenerate = false)
-    val id: String,
+    @PrimaryKey(autoGenerate = false) val id: String,
     val link: String,
     val imgUrl: String,
     var img: Bitmap? = null,
@@ -64,14 +64,27 @@ class ZonedDateTimeConverter {
     }
 
     @TypeConverter
-    fun fromBitmap(bmp: Bitmap): ByteArray {
-        val outputStream = ByteArrayOutputStream()
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-        return outputStream.toByteArray()
+    fun fromBitmap(bmp: Bitmap?): ByteArray? {
+        return try {
+            if (bmp != null) {
+                val outputStream = ByteArrayOutputStream()
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                outputStream.toByteArray()
+            } else {
+                ByteArray(0)
+            }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            ByteArray(0)
+        }
     }
 
     @TypeConverter
-    fun toBitmap(bytes: ByteArray): Bitmap {
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+    fun toBitmap(bytes: ByteArray?): Bitmap {
+        return if (bytes != null) {
+            BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+        } else {
+            createBitmap(1, 1)
+        }
     }
 }

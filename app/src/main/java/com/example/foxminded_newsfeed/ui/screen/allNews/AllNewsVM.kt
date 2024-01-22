@@ -43,12 +43,4 @@ class AllNewsVM @Inject constructor(
             changeFavoriteStatusUseCase.invoke(newsItem)
         }
     }
-
-    fun hideErrorMessage() {
-        generalUIState.update { state ->
-            state.copy(
-                showInternetConnectionError = false
-            )
-        }
-    }
 }

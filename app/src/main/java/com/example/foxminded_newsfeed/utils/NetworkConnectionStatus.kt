@@ -12,7 +12,6 @@ class NetworkConnectionStatus @Inject constructor(val context: Context) : LiveDa
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-
     private lateinit var connectivityManagerCallback: ConnectivityManager.NetworkCallback
 
     override fun onActive() {
@@ -28,7 +27,7 @@ class NetworkConnectionStatus @Inject constructor(val context: Context) : LiveDa
 
     private fun getConnectivityManagerCallback(): ConnectivityManager.NetworkCallback {
 
-        val connectivityManagerCallback = object : ConnectivityManager.NetworkCallback() {
+        connectivityManagerCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 postValue(true)
             }

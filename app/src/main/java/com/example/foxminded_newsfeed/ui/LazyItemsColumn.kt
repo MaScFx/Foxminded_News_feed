@@ -1,7 +1,5 @@
 package com.example.foxminded_newsfeed.ui
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.foxminded_newsfeed.domain.model.NewsItem
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun LazyItemsColumn(
     listNewsItems: List<NewsItem>,

@@ -2,7 +2,7 @@ package com.example.foxminded_newsfeed.ui.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.foxminded_newsfeed.domain.model.UseCaseAnswer
+import com.example.foxminded_newsfeed.domain.model.GetNewsAnswer
 import com.example.foxminded_newsfeed.domain.usecase.GetNewsUseCase
 import com.example.foxminded_newsfeed.ui.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +23,7 @@ class MainActivityVM @Inject constructor(
             )
         }
 
-        val getNewsAnswer: UseCaseAnswer = getNewsUseCase.invoke()
+        val getNewsAnswer: GetNewsAnswer = getNewsUseCase.invoke()
 
         generalUIState.update { state ->
             state.copy(
@@ -33,7 +33,13 @@ class MainActivityVM @Inject constructor(
             )
         }
     }
-
+    fun hideErrorMessage() {
+        generalUIState.update { state ->
+            state.copy(
+                showInternetConnectionError = false
+            )
+        }
+    }
     init {
         refreshNews()
     }

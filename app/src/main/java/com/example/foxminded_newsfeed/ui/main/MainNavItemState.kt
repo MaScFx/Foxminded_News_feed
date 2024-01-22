@@ -1,5 +1,3 @@
-@file:JvmName("NavItemStateKt")
-
 package com.example.foxminded_newsfeed.ui.main
 
 import androidx.compose.runtime.Composable

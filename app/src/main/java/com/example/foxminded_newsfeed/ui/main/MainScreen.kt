@@ -114,7 +114,8 @@ fun MainScreen(
             }
         }) { padding ->
 
-        val pullRefreshState = rememberPullRefreshState(refreshing = uiState.value.isRefreshing,
+        val pullRefreshState = rememberPullRefreshState(
+            refreshing = uiState.value.isRefreshing,
             onRefresh = { mainActivityVM.refreshNews() })
 
         HorizontalPager(state = pagerState) { page ->
@@ -133,8 +134,7 @@ fun MainScreen(
                 }
 
                 PullRefreshIndicator(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter),
+                    modifier = Modifier.align(Alignment.TopCenter),
                     refreshing = uiState.value.isRefreshing,
                     state = pullRefreshState
                 )
@@ -143,7 +143,7 @@ fun MainScreen(
                         Box(modifier = Modifier
                             .fillMaxSize()
                             .background(RedTransparent)
-                            .clickable { allNewsVM.hideErrorMessage() }) {
+                            .clickable { mainActivityVM.hideErrorMessage() }) {
 
                             Column(modifier = Modifier.align(Alignment.Center)) {
                                 Image(
