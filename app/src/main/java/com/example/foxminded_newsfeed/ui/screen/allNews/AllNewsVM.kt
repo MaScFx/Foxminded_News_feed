@@ -1,11 +1,9 @@
 package com.example.foxminded_newsfeed.ui.screen.allNews
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foxminded_newsfeed.domain.model.NewsItem
-import com.example.foxminded_newsfeed.domain.usecase.ClickFavoriteButtonOnItem
+import com.example.foxminded_newsfeed.domain.usecase.ChangeFavoriteStatusUseCase
 import com.example.foxminded_newsfeed.ui.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,10 +13,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class AllNewsVM @Inject constructor(
-    private val clickFavoriteButtonOnItem: ClickFavoriteButtonOnItem,
+    private val changeFavoriteStatusUseCase: ChangeFavoriteStatusUseCase,
     private val generalUIState: MutableStateFlow<UIState>
 ) : ViewModel() {
     val uiState: StateFlow<UIState> = generalUIState.asStateFlow()
@@ -43,7 +40,7 @@ class AllNewsVM @Inject constructor(
         }
 
         viewModelScope.launch {
-            clickFavoriteButtonOnItem.cLick(newsItem)
+            changeFavoriteStatusUseCase.invoke(newsItem)
         }
     }
 

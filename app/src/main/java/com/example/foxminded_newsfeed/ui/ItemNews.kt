@@ -1,7 +1,5 @@
 package com.example.foxminded_newsfeed.ui
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,10 +31,10 @@ import com.example.foxminded_newsfeed.R
 import com.example.foxminded_newsfeed.domain.model.NewsItem
 import com.example.foxminded_newsfeed.domain.model.NewsSource
 import com.example.foxminded_newsfeed.ui.theme.ItemsBackground
-import com.example.foxminded_newsfeed.ui.theme.PrimaryOrange
+import com.example.foxminded_newsfeed.ui.theme.SourceColorReddit
+import com.example.foxminded_newsfeed.ui.theme.SourceColorWelt
 import java.time.ZonedDateTime
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ItemNews(
@@ -54,6 +52,10 @@ fun ItemNews(
         in 7200..86399 -> "${secSincePubDate / 60 / 60} hours ago"
         in 86400..172800 -> "one day ago"
         else -> "${secSincePubDate / 60 / 60 / 24} days ago"
+    }
+    val sourceBackgroundColor = when(newsItem.newsSource){
+        NewsSource.Reddit -> SourceColorReddit
+        NewsSource.WELT -> SourceColorWelt
     }
     Box(
         modifier = Modifier
@@ -94,7 +96,7 @@ fun ItemNews(
                             .height(32.dp)
                             .align(Alignment.TopEnd)
                             .clip(RoundedCornerShape(9.dp))
-                            .background(PrimaryOrange)
+                            .background(sourceBackgroundColor)
                     ) {
                         Text(
                             text = newsItem.newsSource.name,
@@ -116,7 +118,8 @@ fun ItemNews(
                     text = newsItem.title,
                     fontSize = 13.sp,
                     fontFamily = FontFamily(Font(R.font.poppins_extrabold)),
-                    maxLines = 3
+                    maxLines = 3,
+                    modifier = Modifier.width(200.dp)
                 )
 
 
@@ -142,7 +145,6 @@ fun ItemNews(
 
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun ItemNewsPreview() {

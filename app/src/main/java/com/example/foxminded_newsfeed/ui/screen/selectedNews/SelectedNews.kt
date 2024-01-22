@@ -1,9 +1,7 @@
-package com.example.foxminded_newsfeed.ui.screen.newsFromSelectedProvider
+package com.example.foxminded_newsfeed.ui.screen.selectedNews
 
 import android.content.Context
 import android.net.Uri
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,14 +24,13 @@ import com.example.foxminded_newsfeed.R
 import com.example.foxminded_newsfeed.domain.model.NewsItem
 import com.example.foxminded_newsfeed.domain.model.NewsSource
 import com.example.foxminded_newsfeed.ui.LazyItemsColumn
-import com.example.foxminded_newsfeed.ui.theme.sourceColorReddit
-import com.example.foxminded_newsfeed.ui.theme.sourceColorWelt
+import com.example.foxminded_newsfeed.ui.theme.SourceColorReddit
+import com.example.foxminded_newsfeed.ui.theme.SourceColorWelt
 import com.example.foxminded_newsfeed.utils.getFakeNewsItems
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NewsFromSelectedProvider(newsFromSelectedProviderVM: NewsFromSelectedProviderVM) {
-    val uiState by newsFromSelectedProviderVM.uiState.collectAsStateWithLifecycle()
+fun NewsFromSelectedProvider(selectedNewsVM: SelectedNewsVM) {
+    val uiState by selectedNewsVM.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     Column {
@@ -45,8 +42,8 @@ fun NewsFromSelectedProvider(newsFromSelectedProviderVM: NewsFromSelectedProvide
         )
         Row {
             Button(
-                onClick = { newsFromSelectedProviderVM.newsFromSelectedSource(NewsSource.WELT) },
-                colors = ButtonDefaults.buttonColors(containerColor = sourceColorWelt),
+                onClick = { selectedNewsVM.newsFromSelectedSource(NewsSource.WELT) },
+                colors = ButtonDefaults.buttonColors(containerColor = SourceColorWelt),
                 modifier = Modifier
                     .weight(0.4f)
                     .padding(start = 16.dp, end = 8.dp)
@@ -58,8 +55,8 @@ fun NewsFromSelectedProvider(newsFromSelectedProviderVM: NewsFromSelectedProvide
                 )
             }
             Button(
-                onClick = { newsFromSelectedProviderVM.newsFromSelectedSource(NewsSource.Reddit) },
-                colors = ButtonDefaults.buttonColors(containerColor = sourceColorReddit),
+                onClick = { selectedNewsVM.newsFromSelectedSource(NewsSource.Reddit) },
+                colors = ButtonDefaults.buttonColors(containerColor = SourceColorReddit),
                 modifier = Modifier
                     .weight(0.6f)
                     .padding(end = 16.dp)
@@ -73,7 +70,7 @@ fun NewsFromSelectedProvider(newsFromSelectedProviderVM: NewsFromSelectedProvide
         }
         LazyItemsColumn(
             listNewsItems = uiState.selectedNews,
-            onFavoriteButtonClick = { newsFromSelectedProviderVM.clickFavoriteButton(it) },
+            onFavoriteButtonClick = { selectedNewsVM.clickFavoriteButton(it) },
             onItemCLick = {openChromeCustomTabs(newsItem = it, context = context)})
     }
 }
@@ -85,7 +82,6 @@ fun openChromeCustomTabs(newsItem: NewsItem, context: Context) {
 
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun NewsFromSelectedProviderPreview() {

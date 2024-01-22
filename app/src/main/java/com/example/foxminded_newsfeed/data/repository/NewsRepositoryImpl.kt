@@ -1,10 +1,10 @@
-package com.example.foxminded_newsfeed.data
+package com.example.foxminded_newsfeed.data.repository
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.content.Context
 import com.example.foxminded_newsfeed.data.network.reddit.RedditRetrofitClient
 import com.example.foxminded_newsfeed.data.network.welt.WeltRetrofitClient
 import com.example.foxminded_newsfeed.data.room.MainDB
+import com.example.foxminded_newsfeed.data.room.NewsEntity
 import com.example.foxminded_newsfeed.domain.model.NewsItem
 import com.example.foxminded_newsfeed.domain.model.NewsSource
 import kotlinx.coroutines.Dispatchers
@@ -22,10 +22,9 @@ class NewsRepositoryImpl @Inject constructor(
     private val mainDB: MainDB,
     private val weltRetrofitClient: WeltRetrofitClient,
     private val redditRetrofitClient: RedditRetrofitClient,
-    private val converters: Converters
+    private val context: Context
 ) : NewsRepository {
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun checkNewFromSource(newsSource: NewsSource): List<NewsItem> {
         val weltFormatter =
             DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH)
@@ -77,28 +76,26 @@ class NewsRepositoryImpl @Inject constructor(
         return resultList
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getNewsFromBD(): List<NewsItem> {
         return withContext(Dispatchers.IO) {
             mainDB.dao.getAllNews().map { item ->
-                converters.convertNewsEntityToNewsItem(item)
+                NewsEntity.convertNewsEntityToNewsItem(item)
             }
         }
     }
 
     override suspend fun saveNewsItemInDB(newsItem: NewsItem) {
         withContext(Dispatchers.IO) {
-            val favoriteNewsEntity = converters.convertNewsItemToNewsEntity(newsItem)
+            val favoriteNewsEntity = NewsItem.convertNewsItemToNewsEntity(newsItem, context = context)
             if (mainDB.dao.getByID(newsItem.id)?.isFavorite != 1) {
                 mainDB.dao.insert(favoriteNewsEntity)
             }
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getFavoriteNews(): Flow<List<NewsItem>> {
         return mainDB.dao.getFavoriteNews().map { item ->
-            converters.convertNewsEntityListToNewsItemList(item)
+            NewsEntity.convertNewsEntityListToNewsItemList(item)
         }
     }
 

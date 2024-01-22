@@ -1,4 +1,4 @@
-package com.example.foxminded_newsfeed.data
+package com.example.foxminded_newsfeed.data.repository
 
 import com.example.foxminded_newsfeed.domain.model.NewsItem
 import com.example.foxminded_newsfeed.domain.model.NewsSource

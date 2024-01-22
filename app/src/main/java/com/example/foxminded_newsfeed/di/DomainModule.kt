@@ -1,10 +1,10 @@
 package com.example.foxminded_newsfeed.di
 
-import com.example.foxminded_newsfeed.data.NewsRepository
-import com.example.foxminded_newsfeed.domain.usecase.ClickFavoriteButtonOnItem
-import com.example.foxminded_newsfeed.domain.usecase.GetFavoriteNews
-import com.example.foxminded_newsfeed.domain.usecase.GetNews
-import com.example.foxminded_newsfeed.domain.usecase.GetNewsFromSelectedProvider
+import com.example.foxminded_newsfeed.data.repository.NewsRepository
+import com.example.foxminded_newsfeed.domain.usecase.ChangeFavoriteStatusUseCase
+import com.example.foxminded_newsfeed.domain.usecase.GetFavoriteNewsUseCase
+import com.example.foxminded_newsfeed.domain.usecase.GetNewsUseCase
+import com.example.foxminded_newsfeed.domain.usecase.GetNewsFromSelectedProviderUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,25 +17,25 @@ class DomainModule {
 
     @Provides
     @Singleton
-    fun getFavoriteNewsProvider(newsRepository: NewsRepository): GetFavoriteNews {
-        return GetFavoriteNews(newsRepository = newsRepository)
+    fun getFavoriteNewsProvider(newsRepository: NewsRepository): GetFavoriteNewsUseCase {
+        return GetFavoriteNewsUseCase(newsRepository = newsRepository)
     }
 
     @Provides
     @Singleton
-    fun getNewsProvider(newsRepository: NewsRepository): GetNews {
-        return GetNews(newsRepository = newsRepository)
+    fun getNewsProvider(newsRepository: NewsRepository): GetNewsUseCase {
+        return GetNewsUseCase(newsRepository = newsRepository)
     }
 
     @Provides
     @Singleton
-    fun getNewsFromSelectedProviderProvider(newsRepository: NewsRepository): GetNewsFromSelectedProvider {
-        return GetNewsFromSelectedProvider(newsRepository = newsRepository)
+    fun getNewsFromSelectedProviderProvider(newsRepository: NewsRepository): GetNewsFromSelectedProviderUseCase {
+        return GetNewsFromSelectedProviderUseCase(newsRepository = newsRepository)
     }
 
     @Provides
     @Singleton
-    fun getAddNewsToFavoriteProvider(newsRepository: NewsRepository): ClickFavoriteButtonOnItem {
-        return ClickFavoriteButtonOnItem(newsRepository = newsRepository)
+    fun getAddNewsToFavoriteProvider(newsRepository: NewsRepository): ChangeFavoriteStatusUseCase {
+        return ChangeFavoriteStatusUseCase(newsRepository = newsRepository)
     }
 }

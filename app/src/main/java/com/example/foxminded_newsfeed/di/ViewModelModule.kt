@@ -1,15 +1,13 @@
 package com.example.foxminded_newsfeed.di
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import com.example.foxminded_newsfeed.domain.usecase.ClickFavoriteButtonOnItem
-import com.example.foxminded_newsfeed.domain.usecase.GetFavoriteNews
-import com.example.foxminded_newsfeed.domain.usecase.GetNews
+import com.example.foxminded_newsfeed.domain.usecase.ChangeFavoriteStatusUseCase
+import com.example.foxminded_newsfeed.domain.usecase.GetFavoriteNewsUseCase
+import com.example.foxminded_newsfeed.domain.usecase.GetNewsUseCase
 import com.example.foxminded_newsfeed.ui.UIState
 import com.example.foxminded_newsfeed.ui.main.MainActivityVM
 import com.example.foxminded_newsfeed.ui.screen.allNews.AllNewsVM
 import com.example.foxminded_newsfeed.ui.screen.favoriteNews.FavoriteNewsVM
-import com.example.foxminded_newsfeed.ui.screen.newsFromSelectedProvider.NewsFromSelectedProviderVM
+import com.example.foxminded_newsfeed.ui.screen.selectedNews.SelectedNewsVM
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,24 +19,22 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class ViewModelModule {
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     @Singleton
     fun mainActivityVMProvider(
-        getNews: GetNews, mutableStateFlow: MutableStateFlow<UIState>
+        getNewsUseCase: GetNewsUseCase, mutableStateFlow: MutableStateFlow<UIState>
     ): MainActivityVM {
-        return MainActivityVM(getNews = getNews, generalUIState = mutableStateFlow)
+        return MainActivityVM(getNewsUseCase = getNewsUseCase, generalUIState = mutableStateFlow)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @Provides
     @Singleton
     fun allNewsVMProvider(
-        clickFavoriteButtonOnItem: ClickFavoriteButtonOnItem,
+        changeFavoriteStatusUseCase: ChangeFavoriteStatusUseCase,
         mutableStateFlow: MutableStateFlow<UIState>
     ): AllNewsVM {
         return AllNewsVM(
-            clickFavoriteButtonOnItem = clickFavoriteButtonOnItem,
+            changeFavoriteStatusUseCase = changeFavoriteStatusUseCase,
             generalUIState = mutableStateFlow
         )
     }
@@ -46,13 +42,13 @@ class ViewModelModule {
     @Provides
     @Singleton
     fun favoriteNewsVMProvider(
-        getFavoriteNews: GetFavoriteNews,
-        clickFavoriteButtonOnItem: ClickFavoriteButtonOnItem,
+        getFavoriteNewsUseCase: GetFavoriteNewsUseCase,
+        changeFavoriteStatusUseCase: ChangeFavoriteStatusUseCase,
         mutableStateFlow: MutableStateFlow<UIState>
     ): FavoriteNewsVM {
         return FavoriteNewsVM(
-            getFavoriteNews = getFavoriteNews,
-            clickFavoriteButtonOnItem = clickFavoriteButtonOnItem,
+            getFavoriteNewsUseCase = getFavoriteNewsUseCase,
+            changeFavoriteStatusUseCase = changeFavoriteStatusUseCase,
             generalUIState = mutableStateFlow
         )
     }
@@ -60,11 +56,11 @@ class ViewModelModule {
     @Provides
     @Singleton
     fun newsFromSelectedProviderVMProvider(
-        clickFavoriteButtonOnItem: ClickFavoriteButtonOnItem,
+        changeFavoriteStatusUseCase: ChangeFavoriteStatusUseCase,
         mutableStateFlow: MutableStateFlow<UIState>
-    ): NewsFromSelectedProviderVM {
-        return NewsFromSelectedProviderVM(
-            clickFavoriteButtonOnItem = clickFavoriteButtonOnItem, generalUIState = mutableStateFlow
+    ): SelectedNewsVM {
+        return SelectedNewsVM(
+            changeFavoriteStatusUseCase = changeFavoriteStatusUseCase, generalUIState = mutableStateFlow
         )
     }
 

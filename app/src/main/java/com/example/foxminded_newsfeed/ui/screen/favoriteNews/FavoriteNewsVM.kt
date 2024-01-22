@@ -3,8 +3,8 @@ package com.example.foxminded_newsfeed.ui.screen.favoriteNews
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foxminded_newsfeed.domain.model.NewsItem
-import com.example.foxminded_newsfeed.domain.usecase.ClickFavoriteButtonOnItem
-import com.example.foxminded_newsfeed.domain.usecase.GetFavoriteNews
+import com.example.foxminded_newsfeed.domain.usecase.ChangeFavoriteStatusUseCase
+import com.example.foxminded_newsfeed.domain.usecase.GetFavoriteNewsUseCase
 import com.example.foxminded_newsfeed.ui.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,15 +16,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteNewsVM @Inject constructor(
-    private val getFavoriteNews: GetFavoriteNews,
-    private val clickFavoriteButtonOnItem: ClickFavoriteButtonOnItem,
+    private val getFavoriteNewsUseCase: GetFavoriteNewsUseCase,
+    private val changeFavoriteStatusUseCase: ChangeFavoriteStatusUseCase,
     private val generalUIState: MutableStateFlow<UIState>
 ) : ViewModel() {
 
     val uiState: StateFlow<UIState> = generalUIState.asStateFlow()
     fun clickFavoriteButton(newsItem: NewsItem) {
         viewModelScope.launch {
-            clickFavoriteButtonOnItem.cLick(newsItem)
+            changeFavoriteStatusUseCase.invoke(newsItem)
         }
         generalUIState.update { state ->
             val newState: MutableList<NewsItem> = ArrayList()
@@ -46,7 +46,7 @@ class FavoriteNewsVM @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getFavoriteNews.get().collect {
+            getFavoriteNewsUseCase.invoke().collect {
                 generalUIState.update { c ->
                     c.copy(favoriteNews = it)
                 }
