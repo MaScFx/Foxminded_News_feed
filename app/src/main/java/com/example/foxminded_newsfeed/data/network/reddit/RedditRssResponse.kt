@@ -5,6 +5,7 @@ import org.simpleframework.xml.Root
 
 @Root(name = "feed", strict = false)
 data class RedditRssResponse(
-    @field:ElementList(inline = true, name = "item", required = false)
-    var items: List<RssRedditItem>? = null
+    @field:ElementList(
+        inline = true, name = "item", required = false
+    ) var items: List<RssRedditItem>? = null
 )

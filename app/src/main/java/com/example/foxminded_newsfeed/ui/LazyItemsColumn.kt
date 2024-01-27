@@ -6,19 +6,20 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.foxminded_newsfeed.domain.model.NewsItem
+import com.example.foxminded_newsfeed.data.room.NewsEntity
+
 
 @Composable
 fun LazyItemsColumn(
-    listNewsItems: List<NewsItem>,
-    onFavoriteButtonClick: (NewsItem) -> Unit,
-    onItemCLick:(NewsItem) -> Unit,
+    listNewsItems: List<NewsEntity>,
+    onFavoriteButtonClick: (NewsEntity) -> Unit,
+    onItemCLick:(NewsEntity) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val sortedList = listNewsItems.toMutableList()
     sortedList.sortWith { newsItem, newsItem2 ->
-        newsItem.publicationTime.compareTo(
-            newsItem2.publicationTime
+        newsItem.publishedTime.compareTo(
+            newsItem2.publishedTime
         )
     }
     sortedList.reverse()

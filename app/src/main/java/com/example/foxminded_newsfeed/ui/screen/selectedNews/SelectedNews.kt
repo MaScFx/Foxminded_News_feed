@@ -21,16 +21,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.foxminded_newsfeed.R
-import com.example.foxminded_newsfeed.domain.model.NewsItem
+import com.example.foxminded_newsfeed.data.room.NewsEntity
 import com.example.foxminded_newsfeed.domain.model.NewsSource
 import com.example.foxminded_newsfeed.ui.LazyItemsColumn
+import com.example.foxminded_newsfeed.ui.MainViewModel
 import com.example.foxminded_newsfeed.ui.theme.SourceColorReddit
 import com.example.foxminded_newsfeed.ui.theme.SourceColorWelt
 import com.example.foxminded_newsfeed.utils.getFakeNewsItems
-
 @Composable
-fun NewsFromSelectedProvider(selectedNewsVM: SelectedNewsVM) {
-    val uiState by selectedNewsVM.uiState.collectAsStateWithLifecycle()
+fun NewsFromSelectedProvider(mainViewModel: MainViewModel) {
+    val uiState by mainViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     Column {
@@ -42,7 +42,7 @@ fun NewsFromSelectedProvider(selectedNewsVM: SelectedNewsVM) {
         )
         Row {
             Button(
-                onClick = { selectedNewsVM.newsFromSelectedSource(NewsSource.WELT) },
+                onClick = { mainViewModel.newsFromSelectedSource(NewsSource.WELT) },
                 colors = ButtonDefaults.buttonColors(containerColor = SourceColorWelt),
                 modifier = Modifier
                     .weight(0.4f)
@@ -55,7 +55,7 @@ fun NewsFromSelectedProvider(selectedNewsVM: SelectedNewsVM) {
                 )
             }
             Button(
-                onClick = { selectedNewsVM.newsFromSelectedSource(NewsSource.Reddit) },
+                onClick = { mainViewModel.newsFromSelectedSource(NewsSource.Reddit) },
                 colors = ButtonDefaults.buttonColors(containerColor = SourceColorReddit),
                 modifier = Modifier
                     .weight(0.6f)
@@ -70,15 +70,15 @@ fun NewsFromSelectedProvider(selectedNewsVM: SelectedNewsVM) {
         }
         LazyItemsColumn(
             listNewsItems = uiState.selectedNews,
-            onFavoriteButtonClick = { selectedNewsVM.clickFavoriteButton(it) },
-            onItemCLick = {openChromeCustomTabs(newsItem = it, context = context)})
+            onFavoriteButtonClick = { mainViewModel.clickFavoriteButton(it) },
+            onItemCLick = {openChromeCustomTabs(newsEntity = it, context = context)})
     }
 }
 
-fun openChromeCustomTabs(newsItem: NewsItem, context: Context) {
+fun openChromeCustomTabs(newsEntity: NewsEntity, context: Context) {
     val intent: CustomTabsIntent = CustomTabsIntent.Builder()
         .build()
-    intent.launchUrl(context, Uri.parse(newsItem.link))
+    intent.launchUrl(context, Uri.parse(newsEntity.link))
 
 }
 

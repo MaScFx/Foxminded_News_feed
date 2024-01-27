@@ -22,14 +22,12 @@ class DataModule {
     fun newsRepositoryProvider(
         mainDB: MainDB,
         weltRetrofitClient: WeltRetrofitClient,
-        redditRetrofitClient: RedditRetrofitClient,
-        @ApplicationContext context: Context
+        redditRetrofitClient: RedditRetrofitClient
     ): NewsRepository {
         return NewsRepositoryImpl(
             mainDB = mainDB,
             weltRetrofitClient = weltRetrofitClient,
-            redditRetrofitClient = redditRetrofitClient,
-            context = context
+            redditRetrofitClient = redditRetrofitClient
         )
     }
 

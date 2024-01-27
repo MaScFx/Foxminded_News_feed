@@ -14,17 +14,12 @@ interface Dao {
     @Query("DELETE FROM NewsEntity WHERE id = :newsId")
     suspend fun delete(newsId: String)
 
-    @Query("DELETE FROM NewsEntity WHERE isFavorite != 1")
-    suspend fun deleteAllNotFavoriteItems()
-
     @Query("SELECT * FROM NewsEntity")
     fun getAllNews(): List<NewsEntity>
 
     @Query("SELECT * FROM NewsEntity WHERE isFavorite = 1")
-
     fun getFavoriteNews(): Flow<List<NewsEntity>>
 
     @Query("SELECT * FROM NewsEntity WHERE id = :newsId")
     fun getByID(newsId: String): NewsEntity?
-
 }

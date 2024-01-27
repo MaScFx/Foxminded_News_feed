@@ -44,19 +44,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.foxminded_newsfeed.R
+import com.example.foxminded_newsfeed.ui.MainViewModel
 import com.example.foxminded_newsfeed.ui.screen.allNews.AllNews
-import com.example.foxminded_newsfeed.ui.screen.allNews.AllNewsVM
 import com.example.foxminded_newsfeed.ui.screen.favoriteNews.FavoriteNews
-import com.example.foxminded_newsfeed.ui.screen.favoriteNews.FavoriteNewsVM
 import com.example.foxminded_newsfeed.ui.screen.selectedNews.NewsFromSelectedProvider
-import com.example.foxminded_newsfeed.ui.screen.selectedNews.SelectedNewsVM
 import com.example.foxminded_newsfeed.ui.theme.DarkGrey
 import com.example.foxminded_newsfeed.ui.theme.LightGrey
 import com.example.foxminded_newsfeed.ui.theme.PrimaryOrange
 import com.example.foxminded_newsfeed.ui.theme.RedTransparent
 import com.example.foxminded_newsfeed.ui.theme.White
 import kotlinx.coroutines.launch
-
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -67,16 +64,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    allNewsVM: AllNewsVM,
-    favoriteNewsVM: FavoriteNewsVM,
-    selectedNewsVM: SelectedNewsVM,
-    mainActivityVM: MainActivityVM
+    mainViewModel: MainViewModel
 ) {
-    val uiState = mainActivityVM.generalUIState.collectAsState()
+    val uiState = mainViewModel.uiState.collectAsState()
     val items = getNavItemState()
     var bottomNavState by rememberSaveable { mutableIntStateOf(0) }
     val pagerState = rememberPagerState(pageCount = { items.size })
     val scope = rememberCoroutineScope()
+
 
     Scaffold(topBar = {
         TopAppBar(
@@ -116,7 +111,7 @@ fun MainScreen(
 
         val pullRefreshState = rememberPullRefreshState(
             refreshing = uiState.value.isRefreshing,
-            onRefresh = { mainActivityVM.refreshNews() })
+            onRefresh = { mainViewModel.refreshNews() })
 
         HorizontalPager(state = pagerState) { page ->
             bottomNavState = pagerState.currentPage
@@ -128,9 +123,9 @@ fun MainScreen(
             ) {
 
                 when (page) {
-                    0 -> AllNews(allNewsVM = allNewsVM)
-                    1 -> NewsFromSelectedProvider(selectedNewsVM = selectedNewsVM)
-                    2 -> FavoriteNews(favoriteNewsVM = favoriteNewsVM)
+                    0 -> AllNews(mainViewModel = mainViewModel)
+                    1 -> NewsFromSelectedProvider(mainViewModel = mainViewModel)
+                    2 -> FavoriteNews(mainViewModel = mainViewModel)
                 }
 
                 PullRefreshIndicator(
@@ -143,7 +138,7 @@ fun MainScreen(
                         Box(modifier = Modifier
                             .fillMaxSize()
                             .background(RedTransparent)
-                            .clickable { mainActivityVM.hideErrorMessage() }) {
+                            .clickable { mainViewModel.hideErrorMessage() }) {
 
                             Column(modifier = Modifier.align(Alignment.Center)) {
                                 Image(

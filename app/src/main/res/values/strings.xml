@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Foxminded_News feed</string>
+    <string name="app_name">Foxminded news feed</string>
     <string name="article_in_favorites">article in favorites</string>
     <string name="article_is_not_favorites">article is not favorites</string>
     <string name="all_groups">All groups</string>
@@ -9,4 +9,5 @@
     <string name="select_news_provider">select news provider</string>
     <string name="selected_articles">selected articles</string>
     <string name="no_internet_message">Internet is not available now</string>
+    <string name="device_is_online_swipe_to_refresh_news">Device is online! Swipe to refresh news</string>
 </resources>

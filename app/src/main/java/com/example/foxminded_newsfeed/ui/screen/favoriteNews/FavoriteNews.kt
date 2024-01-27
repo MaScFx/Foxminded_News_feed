@@ -7,20 +7,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import com.example.foxminded_newsfeed.domain.model.NewsItem
+import com.example.foxminded_newsfeed.data.room.NewsEntity
 import com.example.foxminded_newsfeed.ui.LazyItemsColumn
+import com.example.foxminded_newsfeed.ui.MainViewModel
 
 @Composable
-fun FavoriteNews(favoriteNewsVM: FavoriteNewsVM) {
-    val uiState by favoriteNewsVM.uiState.collectAsState()
+fun FavoriteNews(mainViewModel: MainViewModel) {
+    val uiState by mainViewModel.uiState.collectAsState()
     val context = LocalContext.current
 
     LazyItemsColumn(listNewsItems = uiState.favoriteNews,
-        onFavoriteButtonClick = { favoriteNewsVM.clickFavoriteButton(it) },
-        onItemCLick = { openChromeCustomTabs(newsItem = it, context = context) })
+        onFavoriteButtonClick = { mainViewModel.clickFavoriteButton(it) },
+        onItemCLick = { openChromeCustomTabs(newsEntity = it, context = context) })
 }
 
-fun openChromeCustomTabs(newsItem: NewsItem, context: Context) {
+fun openChromeCustomTabs(newsEntity: NewsEntity, context: Context) {
     val intent: CustomTabsIntent = CustomTabsIntent.Builder().build()
-    intent.launchUrl(context, Uri.parse(newsItem.link))
+    intent.launchUrl(context, Uri.parse(newsEntity.link))
 }

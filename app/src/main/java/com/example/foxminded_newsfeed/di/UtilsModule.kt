@@ -15,7 +15,7 @@ class UtilsModule {
 
     @Provides
     @Singleton
-    fun networkConnectionStatusProvider(@ApplicationContext context: Context): NetworkConnectionStatus{
+    fun networkConnectionStatusProvider(@ApplicationContext context: Context): NetworkConnectionStatus {
         return NetworkConnectionStatus(context)
     }
 }

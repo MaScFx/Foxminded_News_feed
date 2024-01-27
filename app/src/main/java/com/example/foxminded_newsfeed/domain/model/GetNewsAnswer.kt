@@ -1,3 +1,6 @@
 package com.example.foxminded_newsfeed.domain.model
 
-data class GetNewsAnswer(val internetIsAvailable: Boolean, val resultList: List<NewsItem>)
+import com.example.foxminded_newsfeed.data.room.NewsEntity
+
+
+data class GetNewsAnswer(val internetIsAvailable: Boolean, val resultList: List<NewsEntity>)

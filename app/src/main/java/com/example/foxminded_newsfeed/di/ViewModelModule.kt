@@ -3,11 +3,8 @@ package com.example.foxminded_newsfeed.di
 import com.example.foxminded_newsfeed.domain.usecase.ChangeFavoriteStatusUseCase
 import com.example.foxminded_newsfeed.domain.usecase.GetFavoriteNewsUseCase
 import com.example.foxminded_newsfeed.domain.usecase.GetNewsUseCase
+import com.example.foxminded_newsfeed.ui.MainViewModel
 import com.example.foxminded_newsfeed.ui.UIState
-import com.example.foxminded_newsfeed.ui.main.MainActivityVM
-import com.example.foxminded_newsfeed.ui.screen.allNews.AllNewsVM
-import com.example.foxminded_newsfeed.ui.screen.favoriteNews.FavoriteNewsVM
-import com.example.foxminded_newsfeed.ui.screen.selectedNews.SelectedNewsVM
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,45 +19,16 @@ class ViewModelModule {
     @Provides
     @Singleton
     fun mainActivityVMProvider(
-        getNewsUseCase: GetNewsUseCase, mutableStateFlow: MutableStateFlow<UIState>
-    ): MainActivityVM {
-        return MainActivityVM(getNewsUseCase = getNewsUseCase, generalUIState = mutableStateFlow)
-    }
-
-    @Provides
-    @Singleton
-    fun allNewsVMProvider(
+        getNewsUseCase: GetNewsUseCase,
+        mutableStateFlow: MutableStateFlow<UIState>,
         changeFavoriteStatusUseCase: ChangeFavoriteStatusUseCase,
-        mutableStateFlow: MutableStateFlow<UIState>
-    ): AllNewsVM {
-        return AllNewsVM(
+        getFavoriteNewsUseCase: GetFavoriteNewsUseCase
+    ): MainViewModel {
+        return MainViewModel(
+            getNewsUseCase = getNewsUseCase,
+            uiState = mutableStateFlow,
             changeFavoriteStatusUseCase = changeFavoriteStatusUseCase,
-            generalUIState = mutableStateFlow
-        )
-    }
-
-    @Provides
-    @Singleton
-    fun favoriteNewsVMProvider(
-        getFavoriteNewsUseCase: GetFavoriteNewsUseCase,
-        changeFavoriteStatusUseCase: ChangeFavoriteStatusUseCase,
-        mutableStateFlow: MutableStateFlow<UIState>
-    ): FavoriteNewsVM {
-        return FavoriteNewsVM(
-            getFavoriteNewsUseCase = getFavoriteNewsUseCase,
-            changeFavoriteStatusUseCase = changeFavoriteStatusUseCase,
-            generalUIState = mutableStateFlow
-        )
-    }
-
-    @Provides
-    @Singleton
-    fun newsFromSelectedProviderVMProvider(
-        changeFavoriteStatusUseCase: ChangeFavoriteStatusUseCase,
-        mutableStateFlow: MutableStateFlow<UIState>
-    ): SelectedNewsVM {
-        return SelectedNewsVM(
-            changeFavoriteStatusUseCase = changeFavoriteStatusUseCase, generalUIState = mutableStateFlow
+            getFavoriteNewsUseCase = getFavoriteNewsUseCase
         )
     }
 

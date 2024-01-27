@@ -1,11 +1,12 @@
 package com.example.foxminded_newsfeed.ui
 
-import com.example.foxminded_newsfeed.domain.model.NewsItem
+import com.example.foxminded_newsfeed.data.room.NewsEntity
 
 data class UIState(
-    val allNews: List<NewsItem> = ArrayList(),
-    val selectedNews: List<NewsItem> = ArrayList(),
-    val favoriteNews: List<NewsItem> = ArrayList(),
+    val allNews: List<NewsEntity> = ArrayList(),
+    val selectedNews: List<NewsEntity> = ArrayList(),
+    val favoriteNews: List<NewsEntity> = ArrayList(),
     val showInternetConnectionError: Boolean = false,
     val isRefreshing : Boolean = true
 )
+

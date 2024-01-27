@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.foxminded_newsfeed.R
-import com.example.foxminded_newsfeed.domain.model.NewsItem
+import com.example.foxminded_newsfeed.data.room.NewsEntity
 import com.example.foxminded_newsfeed.domain.model.NewsSource
 import com.example.foxminded_newsfeed.ui.theme.ItemsBackground
 import com.example.foxminded_newsfeed.ui.theme.SourceColorReddit
@@ -38,12 +38,12 @@ import java.time.ZonedDateTime
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ItemNews(
-    newsItem: NewsItem,
-    onFavoriteButtonClick: (NewsItem) -> Unit,
-    onItemCLick: (NewsItem) -> Unit
+    newsItem: NewsEntity,
+    onFavoriteButtonClick: (NewsEntity) -> Unit,
+    onItemCLick: (NewsEntity) -> Unit
 ) {
     val secSincePubDate =
-        (ZonedDateTime.now().toEpochSecond() - newsItem.publicationTime.toEpochSecond())
+        (ZonedDateTime.now().toEpochSecond() - newsItem.publishedTime.toEpochSecond())
 
     val timeForItemPrint = when (secSincePubDate) {
         in 0..59 -> "now"
@@ -125,10 +125,10 @@ fun ItemNews(
 
             }
         }
-        val favoriteIcon = if (newsItem.isFavorites==1) R.drawable.bookmark_selected
+        val favoriteIcon = if (newsItem.isFavorite==1) R.drawable.bookmark_selected
         else R.drawable.bookmark
 
-        val contentDescription = if (newsItem.isFavorites==1) R.string.article_in_favorites
+        val contentDescription = if (newsItem.isFavorite==1) R.string.article_in_favorites
         else R.string.article_is_not_favorites
 
         Image(
@@ -149,12 +149,12 @@ fun ItemNews(
 @Composable
 fun ItemNewsPreview() {
     ItemNews(
-        newsItem = NewsItem(
+        newsItem = NewsEntity(
             imgUrl = "",
             title = "Good news!! Your DOG Win five million dollars! Graz!",
-            publicationTime = ZonedDateTime.now(),
+            publishedTime = ZonedDateTime.now(),
             newsSource = NewsSource.Reddit,
-            isFavorites = 1,
+            isFavorite = 1,
             id = "",
             link = "",
         ),
